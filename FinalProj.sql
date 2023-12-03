@@ -64,15 +64,23 @@ CREATE TABLE PlaylistTracks (
     FOREIGN KEY (tid) REFERENCES Track(tid)
     );
 
-DROP TABLE Album;
-DROP TABLE Track;
-DROP TABLE Artist;
-DROP TABLE Playlist;
-DROP TABLE Genre;
-DROP TABLE ArtistGenres;
-DROP TABLE Performances;
-DROP TABLE ArtistAlbums;
-DROP TABLE PlaylistTracks;
+-- DROP TABLE Album;
+-- DROP TABLE Track;
+-- DROP TABLE Artist;
+-- DROP TABLE Playlist;
+-- DROP TABLE Genre;
+-- DROP TABLE ArtistGenres;
+-- DROP TABLE Performances;
+-- DROP TABLE ArtistAlbums;
+-- DROP TABLE PlaylistTracks;
 
-    
+SELECT * FROM Album;
+SELECT * FROM Track;
+SELECT * FROM Artist;
+SELECT * FROM Playlist;
+SELECT * FROM Genre;
+SELECT * FROM ArtistGenres;
+SELECT * FROM Performances;
+SELECT * FROM ArtistAlbums;
+SELECT * FROM PlaylistTracks;
     

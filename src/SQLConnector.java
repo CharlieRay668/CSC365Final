@@ -1,3 +1,5 @@
+import com.mysql.fabric.xmlrpc.base.Array;
+
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -98,6 +100,7 @@ class SQLConnector {
             String artistID = (String) artist.get("id");
             String artistName = (String) artist.get("name");
             Object popularity = artist.get("popularity");
+            System.out.println(popularity);
             if (popularity == null) {
                 popularity = 0;
             } else {
@@ -133,6 +136,19 @@ class SQLConnector {
     }
 
     public static void main(String[] args) {
-
+        APIPuller api = new APIPuller();
+        SQLConnector sql = new SQLConnector();
+        try {
+            sql.clearTables();
+            String artist = "";
+            String album = "";
+            String track = "Just Wanna Rock";
+            Map<String, ArrayList<Map<String, Object>>> tracks = api.querySpotify(artist, album, track);
+            ArrayList<Map<String, Object>> trackList = tracks.get("tracks");
+            Map <String, Object> trackInfo = trackList.get(0);
+            sql.addUnseenTrack(trackInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
