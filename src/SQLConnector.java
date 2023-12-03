@@ -7,12 +7,13 @@ import java.util.Map;
 
 class SQLConnector {
     static private Connection connect;
-
+    static private APIPuller api;
     public SQLConnector() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             this.connect = DriverManager.getConnection(
                     "jdbc:mysql://ambari-node5.csc.calpoly.edu:3306?user=chray&password=talltree");
+            this.api = new APIPuller();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -101,15 +102,6 @@ class SQLConnector {
         }
     }
 
-    public void addTrackToPlaylist(String pid, String tid) {
-        try {
-            Statement stmt = this.connect.createStatement();
-            stmt.executeUpdate("INSERT INTO chray.PlaylistTracks (pid, tid) VALUES ('"+pid+"','"+tid+"');");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 //    This method operates under the assumption that the track is not already in the database,
 //    That just means that it also hits spotify's API for the rest of the information
     public void addUnseenTrack(Map<String, Object> trackInfo) throws IOException, InterruptedException {
@@ -155,6 +147,32 @@ class SQLConnector {
         }
     }
 
+    public void addTrackToPlaylist(String pid, String tid) {
+        try {
+            Statement stmt = this.connect.createStatement();
+            stmt.executeUpdate("SELECT * FROM chray.Track WHERE tid = '"+tid+"';");
+            ResultSet rs = stmt.getResultSet();
+            if (rs.next()) {
+                stmt.executeUpdate("INSERT INTO chray.PlaylistTracks (pid, tid) VALUES ('"+pid+"','"+tid+"');");
+            } else {
+                Map<String, Object> trackInfo = this.api.getTrack(tid);
+                this.addUnseenTrack(trackInfo);
+                stmt.executeUpdate("INSERT INTO chray.PlaylistTracks (pid, tid) VALUES ('"+pid+"','"+tid+"');");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createPlaylist(String name) {
+        try {
+            Statement stmt = this.connect.createStatement();
+            stmt.executeUpdate("INSERT INTO chray.Playlist (name) VALUES ('"+name+"');");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void clearTables() {
         try {
             Statement stmt = this.connect.createStatement();
@@ -163,6 +181,7 @@ class SQLConnector {
             stmt.executeUpdate("DELETE FROM chray.Performances;");
             stmt.executeUpdate("DELETE FROM chray.ArtistGenres;");
             stmt.executeUpdate("DELETE FROM chray.AlbumTracks;");
+            stmt.executeUpdate("DELETE FROM chray.Plays;");
             stmt.executeUpdate("DELETE FROM chray.Track;");
             stmt.executeUpdate("DELETE FROM chray.Album;");
             stmt.executeUpdate("DELETE FROM chray.Artist;");
@@ -178,11 +197,18 @@ class SQLConnector {
         SQLConnector sql = new SQLConnector();
         try {
             sql.clearTables();
+//            Query string
             String track = "Just Wanna Rock";
+//            Hit the backend
             Map<String, ArrayList<Map<String, Object>>> tracks = api.querySpotify(track);
+//            Display the tracks
             ArrayList<Map<String, Object>> trackList = tracks.get("tracks");
+//            Allow the user to select a track, im just grabbing the first for this point
             Map <String, Object> firstTrack = trackList.get(0);
+//            Get the track from the api
             Map <String, Object> trackInfo = api.getTrack((String) firstTrack.get("id"));
+//            Insert the track into the database, this will eventually be handled by
+//            "addTrackToPlaylist()" function, which checks if the track is already in the db
             sql.addUnseenTrack(trackInfo);
         } catch (Exception e) {
             e.printStackTrace();
