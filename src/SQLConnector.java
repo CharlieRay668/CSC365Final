@@ -21,7 +21,43 @@ class SQLConnector {
     public void insertGenre(String genre) {
         try {
             Statement stmt = this.connect.createStatement();
-            stmt.executeUpdate("INSERT INTO chray.Genre (genre) VALUES ('"+genre+"');");
+            stmt.executeUpdate("INSERT INTO chray.Genre (name) VALUES ('"+genre+"');");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void linkArtistGenre(String artistID, String genre) {
+        try {
+            Statement stmt = this.connect.createStatement();
+            stmt.executeUpdate("INSERT INTO chray.ArtistGenres (aid, genre) VALUES ('"+artistID+"','"+genre+"');");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void linkArtistAlbum(String artistID, String albumID) {
+        try {
+            Statement stmt = this.connect.createStatement();
+            stmt.executeUpdate("INSERT INTO chray.ArtistAlbums (aid, albumID) VALUES ('"+artistID+"','"+albumID+"');");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void linkPerformance(String artistID, String trackID) {
+        try {
+            Statement stmt = this.connect.createStatement();
+            stmt.executeUpdate("INSERT INTO chray.Performances (aid, tid) VALUES ('"+artistID+"','"+trackID+"');");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void linkAlbumTrack(String albumID, String trackID) {
+        try {
+            Statement stmt = this.connect.createStatement();
+            stmt.executeUpdate("INSERT INTO chray.AlbumTracks (albumID, tid) VALUES ('"+albumID+"','"+trackID+"');");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,16 +112,15 @@ class SQLConnector {
 
 //    This method operates under the assumption that the track is not already in the database,
 //    That just means that it also hits spotify's API for the rest of the information
-    public void addUnseenTrack(Map<String, Object> track) throws IOException, InterruptedException {
+    public void addUnseenTrack(Map<String, Object> trackInfo) throws IOException, InterruptedException {
+        Map<String, Object> track = (Map<String, Object>) trackInfo.get("track");
         String tid = (String) track.get("id");
         int duration = (int) track.get("duration_ms");
         boolean explicit = (boolean) track.get("explicit");
         String name = (String) track.get("name");
         String uri = (String) track.get("uri");
-        APIPuller api = new APIPuller();
         this.instertTrack(tid, duration, explicit, name, uri);
 
-        Map<String, Object> trackInfo = api.getTrack(tid);
         Map<String, Object> album = (Map<String, Object>) trackInfo.get("album");
         String albumID = (String) album.get("id");
         String type = (String) album.get("type");
@@ -94,13 +129,12 @@ class SQLConnector {
         String releaseDate = (String) album.get("release_date");
         String albumURI = (String) album.get("uri");
         this.insertAlbum(albumID, type, totalTracks, albumName, releaseDate, albumURI);
-
+        this.linkAlbumTrack(albumID, tid);
         ArrayList<Map<String, Object>> artists = (ArrayList<Map<String, Object>>) trackInfo.get("artists");
         for (Map<String, Object> artist : artists) {
             String artistID = (String) artist.get("id");
             String artistName = (String) artist.get("name");
             Object popularity = artist.get("popularity");
-            System.out.println(popularity);
             if (popularity == null) {
                 popularity = 0;
             } else {
@@ -109,12 +143,15 @@ class SQLConnector {
             String artistURI = (String) artist.get("uri");
             int followers = (int) artist.get("followers");
             ArrayList<String> genres = (ArrayList<String>) artist.get("genres");
+            this.insertArtist(artistName, artistID, (int) popularity, artistURI, followers);
             if (genres != null) {
                 for (String genre : genres) {
                     this.insertGenre(genre);
+                    this.linkArtistGenre(artistID, genre);
                 }
             }
-            this.insertArtist(artistName, artistID, (int) popularity, artistURI, followers);
+            this.linkArtistAlbum(artistID, albumID);
+            this.linkPerformance(artistID, tid);
         }
     }
 
@@ -125,6 +162,7 @@ class SQLConnector {
             stmt.executeUpdate("DELETE FROM chray.ArtistAlbums;");
             stmt.executeUpdate("DELETE FROM chray.Performances;");
             stmt.executeUpdate("DELETE FROM chray.ArtistGenres;");
+            stmt.executeUpdate("DELETE FROM chray.AlbumTracks;");
             stmt.executeUpdate("DELETE FROM chray.Track;");
             stmt.executeUpdate("DELETE FROM chray.Album;");
             stmt.executeUpdate("DELETE FROM chray.Artist;");
@@ -140,12 +178,11 @@ class SQLConnector {
         SQLConnector sql = new SQLConnector();
         try {
             sql.clearTables();
-            String artist = "";
-            String album = "";
             String track = "Just Wanna Rock";
-            Map<String, ArrayList<Map<String, Object>>> tracks = api.querySpotify(artist, album, track);
+            Map<String, ArrayList<Map<String, Object>>> tracks = api.querySpotify(track);
             ArrayList<Map<String, Object>> trackList = tracks.get("tracks");
-            Map <String, Object> trackInfo = trackList.get(0);
+            Map <String, Object> firstTrack = trackList.get(0);
+            Map <String, Object> trackInfo = api.getTrack((String) firstTrack.get("id"));
             sql.addUnseenTrack(trackInfo);
         } catch (Exception e) {
             e.printStackTrace();

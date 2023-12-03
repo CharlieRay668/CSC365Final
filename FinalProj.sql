@@ -63,6 +63,14 @@ CREATE TABLE PlaylistTracks (
     FOREIGN KEY (pid) REFERENCES Playlist(pid),
     FOREIGN KEY (tid) REFERENCES Track(tid)
     );
+    
+CREATE TABLE AlbumTracks (
+	tid varchar(30),
+    albumID varchar(30),
+    PRIMARY KEY (tid, albumID),
+    FOREIGN KEY (tid) REFERENCES Track(tid),
+    FOREIGN KEY (albumID) REFERENCES Album(albumID)
+    );
 
 -- DROP TABLE Album;
 -- DROP TABLE Track;
@@ -73,6 +81,7 @@ CREATE TABLE PlaylistTracks (
 -- DROP TABLE Performances;
 -- DROP TABLE ArtistAlbums;
 -- DROP TABLE PlaylistTracks;
+-- DROP TABLE AlbumTracks;
 
 SELECT * FROM Album;
 SELECT * FROM Track;
@@ -83,4 +92,5 @@ SELECT * FROM ArtistGenres;
 SELECT * FROM Performances;
 SELECT * FROM ArtistAlbums;
 SELECT * FROM PlaylistTracks;
+SELECT * FROM AlbumTracks;
     

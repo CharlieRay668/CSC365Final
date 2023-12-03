@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d6691ab9-db26-41db-a67e-65a709c8570d" name="Changes" comment="&quot;integrated javafx into main, started a stage, now idea how the rest of it works&quot;">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalProj.sql" beforeDir="false" afterPath="$PROJECT_DIR$/FinalProj.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/APIPuller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/APIPuller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SQLConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SQLConnector.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
