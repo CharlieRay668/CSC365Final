@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d6691ab9-db26-41db-a67e-65a709c8570d" name="Changes" comment="&quot;integrated javafx into main, started a stage, now idea how the rest of it works&quot;">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/fasterxml_jackson_core_annotations.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/fasterxml_jackson_core_databind.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Track.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="d6691ab9-db26-41db-a67e-65a709c8570d" name="Changes" comment="&quot;integrated search fields to be stored upon click of search button, added logo&quot;">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FifaSQL.iml" beforeDir="false" afterPath="$PROJECT_DIR$/FifaSQL.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/APIPuller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/APIPuller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SQLConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SQLConnector.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +44,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/openjfx-21.0.1_windows-x64_bin-sdk/javafx-sdk-21.0.1/lib",
+    "last_opened_file_path": "C:/CSC 365/openjfx-21.0.1_windows-x64_bin-sdk (1)/javafx-sdk-21.0.1/lib",
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2"
@@ -66,11 +59,11 @@
       </method>
     </configuration>
     <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="openjdk-21" />
+      <option name="ALTERNATIVE_JRE_PATH" value="$USER_HOME$/.jdks/openjdk-21.0.1" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="FifaSQL" />
-      <option name="VM_PARAMETERS" value="--module-path &quot;$PROJECT_DIR$/../javafx-sdk-21.0.1/lib&quot; --add-modules javafx.controls,javafx.fxml " />
+      <option name="VM_PARAMETERS" value="--module-path &quot;C:\CSC 365\openjfx-21.0.1_windows-x64_bin-sdk (1)\javafx-sdk-21.0.1\lib&quot; --add-modules javafx.controls,javafx.fxml " />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -124,7 +117,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701509577238</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="&quot;integrated search fields to be stored upon click of search button, added logo&quot;">
+      <created>1701636562268</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1701636562268</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -140,6 +140,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="&quot;integrated javafx into main, started a stage, now idea how the rest of it works&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="&quot;integrated javafx into main, started a stage, now idea how the rest of it works&quot;" />
+    <MESSAGE value="&quot;integrated search fields to be stored upon click of search button, added logo&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;integrated search fields to be stored upon click of search button, added logo&quot;" />
   </component>
 </project>
