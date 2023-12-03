@@ -18,6 +18,11 @@ CREATE TABLE Track (
     name varchar(200),
     uri varchar(200)
     );
+
+CREATE TABLE Playlist (
+    pid varchar(30) PRIMARY KEY,
+    name varchar(200)
+    );
     
 CREATE TABLE Album (
 	albumID varchar(30) PRIMARY KEY,
@@ -52,13 +57,23 @@ CREATE TABLE ArtistAlbums (
     FOREIGN KEY (albumID) REFERENCES Album(albumID)
     );
     
+CREATE TABLE PlaylistTracks (
+    pid varchar(30),
+    tid varchar(30),
+    PRIMARY KEY (pid, tid),
+    FOREIGN KEY (pid) REFERENCES Playlist(pid),
+    FOREIGN KEY (tid) REFERENCES Track(tid)
+    );
+
 DROP TABLE Album;
 DROP TABLE Track;
 DROP TABLE Artist;
+DROP TABLE Playlist;
 DROP TABLE Genre;
 DROP TABLE ArtistGenres;
 DROP TABLE Performances;
 DROP TABLE ArtistAlbums;
+DROP TABLE PlaylistTracks;
 
     
     
