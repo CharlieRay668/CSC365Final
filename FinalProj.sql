@@ -12,7 +12,6 @@ CREATE TABLE Artist (
 
 CREATE TABLE Track (
 	tid varchar(30) PRIMARY KEY,
-	album varchar(30),
 	duration INTEGER,
     explicit BOOLEAN,
     name varchar(200),
