@@ -138,6 +138,7 @@ public class APIPuller {
         Map<String, Object> map = mapper.readValue(data, Map.class);
         // Load the album
         LinkedHashMap<String, Object> albumData = (LinkedHashMap<String, Object>) map.get("album");
+        System.out.println(albumData);
         Map<String, Object> album = this.parseAlbum(albumData);
         String albumID = (String) album.get("id");
         Map<String, Object> fullAlbum = this.getAlbum(albumID);;

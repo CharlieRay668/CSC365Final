@@ -19,7 +19,7 @@ CREATE TABLE Track (
     );
 
 CREATE TABLE Playlist (
-    pid varchar(30) PRIMARY KEY,
+    pid INTEGER PRIMARY KEY AUTO_INCREMENT,
     name varchar(200)
     );
     
@@ -57,7 +57,7 @@ CREATE TABLE ArtistAlbums (
     );
     
 CREATE TABLE PlaylistTracks (
-    pid varchar(30),
+    pid INTEGER,
     tid varchar(30),
     PRIMARY KEY (pid, tid),
     FOREIGN KEY (pid) REFERENCES Playlist(pid),
@@ -72,25 +72,36 @@ CREATE TABLE AlbumTracks (
     FOREIGN KEY (albumID) REFERENCES Album(albumID)
     );
 
--- DROP TABLE Album;
--- DROP TABLE Track;
--- DROP TABLE Artist;
--- DROP TABLE Playlist;
--- DROP TABLE Genre;
--- DROP TABLE ArtistGenres;
--- DROP TABLE Performances;
--- DROP TABLE ArtistAlbums;
--- DROP TABLE PlaylistTracks;
--- DROP TABLE AlbumTracks;
+CREATE TABLE Plays (
+	playID INTEGER PRIMARY KEY AUTO_INCREMENT, 
+	tid varchar(30),
+    datePlayed DATE
+    );
+    
+
+DROP TABLE Album;
+DROP TABLE Track;
+DROP TABLE Artist;
+DROP TABLE Playlist;
+DROP TABLE Genre;
+DROP TABLE Plays;
+DROP TABLE ArtistGenres;
+DROP TABLE Performances;
+DROP TABLE ArtistAlbums;
+DROP TABLE PlaylistTracks;
+DROP TABLE AlbumTracks;
 
 SELECT * FROM Album;
 SELECT * FROM Track;
 SELECT * FROM Artist;
 SELECT * FROM Playlist;
 SELECT * FROM Genre;
+SELECT * FROM Plays;
 SELECT * FROM ArtistGenres;
 SELECT * FROM Performances;
 SELECT * FROM ArtistAlbums;
 SELECT * FROM PlaylistTracks;
 SELECT * FROM AlbumTracks;
+
+INSERT INTO Playlist (name) VALUES ("Liked Songs");
     
