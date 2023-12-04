@@ -7,10 +7,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="mysql.connector.java" level="application" />
-    <orderEntry type="library" name="fasterxml.jackson.core" level="application" />
     <orderEntry type="library" name="fasterxml.jackson.core.annotations" level="project" />
     <orderEntry type="library" name="fasterxml.jackson.core.databind" level="project" />
+    <orderEntry type="library" name="fasterxml.jackson.core" level="project" />
+    <orderEntry type="library" name="mysql.connector.java" level="project" />
     <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
