@@ -17,7 +17,20 @@ import javafx.scene.layout.VBox;
 
 public class Main extends Application {
 
-    public void start(Stage stage)throws Exception {
+
+    public void start(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+        primaryStage.setTitle("Spotify Search Engine");
+        Image icon =new Image("logo.png");
+        //sets title,window size, and label
+        primaryStage.getIcons().add(icon);
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
+
+    }
+
+
+    public void startTest(Stage stage)throws Exception {
         Group root = new Group();
         Scene scene = new Scene(root, Color.LIGHTSLATEGREY);
         Image icon =new Image("logo.png");
@@ -63,8 +76,8 @@ public class Main extends Application {
             //resultList.getItems().clear();
             //resultList.getItems().addAll(searchResults);
         });
-        stage.setScene(scene);
-        stage.show();
+        //stage.setScene(scene);
+        //stage.show();
     }
     public static void main(String[] args) {
         System.out.println("Hello world!");

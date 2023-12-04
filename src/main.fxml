@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="712.0" prefWidth="1054.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+   <children>
+      <TextField id="trackString" fx:id="trackString" layoutX="86.0" layoutY="120.0" prefHeight="47.0" prefWidth="224.0" promptText="Enter Track Name">
+         <font>
+            <Font name="Dubai Regular" size="19.0" />
+         </font>
+      </TextField>
+      <ListView id="trackList" fx:id="mainSearchResults" layoutX="86.0" layoutY="179.0" prefHeight="351.0" prefWidth="298.0" />
+      <Button id="searchButton" layoutX="310.0" layoutY="120.0" mnemonicParsing="false" onAction="#searchMain" prefHeight="47.0" prefWidth="64.0" text="Search">
+         <font>
+            <Font name="Dubai Regular" size="15.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
