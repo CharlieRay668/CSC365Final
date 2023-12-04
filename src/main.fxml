@@ -19,5 +19,7 @@
             <Font name="Dubai Regular" size="15.0" />
          </font>
       </Button>
+      <Button layoutX="972.0" layoutY="8.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="64.0" text="Playlists" />
+      <Button layoutX="908.0" layoutY="8.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="64.0" text="Home" />
    </children>
 </AnchorPane>
