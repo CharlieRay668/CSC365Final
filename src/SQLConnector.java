@@ -269,6 +269,44 @@ class SQLConnector {
         }
     }
 
+    public Map<String, Object> grabAlbum(String albumID) {
+        try {
+            Statement stmt = this.connect.createStatement();
+            stmt.executeQuery("SELECT * FROM chray.Album WHERE albumID = '"+albumID+"';");
+            ResultSet rs = stmt.getResultSet();
+            rs.next();
+            Map<String, Object> album = new HashMap<>();
+            album.put("albumID", albumID);
+            album.put("type", rs.getString("type"));
+            album.put("totalTracks", rs.getInt("totalTracks"));
+            album.put("name", rs.getString("name"));
+            album.put("releaseDate", rs.getString("releaseDate"));
+            album.put("uri", rs.getString("uri"));
+            return album;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Map<String, Object> grabArtist(String aid) {
+        try {
+            Statement stmt = this.connect.createStatement();
+            stmt.executeQuery("SELECT * FROM chray.Artist WHERE aid = '"+aid+"';");
+            ResultSet rs = stmt.getResultSet();
+            rs.next();
+            Map<String, Object> artist = new HashMap<>();
+            artist.put("aid", aid);
+            artist.put("name", rs.getString("name"));
+            artist.put("popularity", rs.getInt("popularity"));
+            artist.put("uri", rs.getString("uri"));
+            artist.put("followers", rs.getInt("followers"));
+            return artist;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public ArrayList<Map<String, Object>> getPlaylistSongs(int pid) {
         try {
             Statement stmt = this.connect.createStatement();
@@ -289,64 +327,168 @@ class SQLConnector {
 
     public ArrayList<Map<String, Object>> filterPlaylistBy(int pid, String filterType, String filterValue) {
         try {
-            Statement stmt = this.connect.createStatement();
-            stmt.executeQuery("SELECT * FROM chray.PlaylistTracks WHERE pid = '"+Integer.toString(pid)+"';");
-            ResultSet rs = stmt.getResultSet();
             ArrayList<Map<String, Object>> tracks = new ArrayList<>();
-            while (rs.next()) {
-                String tid = rs.getString("tid");
-                if (filterType.equals("artist")) {
-                    Statement artistStmt = this.connect.createStatement();
-                    artistStmt.executeQuery("SELECT * FROM chray.Artist WHERE name = '"+filterValue+"';");
-                    ResultSet artistRS = artistStmt.getResultSet();
-                    artistRS.next();
-                    String artistID = artistRS.getString("aid");
-                    Statement performanceStmt = this.connect.createStatement();
-                    performanceStmt.executeQuery("SELECT * FROM chray.Performances WHERE tid = '"+tid+"' AND aid = '"+artistID+"';");
-                    ResultSet performanceRS = performanceStmt.getResultSet();
-                    while (performanceRS.next()) {
-                        tracks.add(this.grabSong(tid));
-                    }
-                } else if (filterType.equals("duration")) {
-                    stmt.executeQuery("SELECT * FROM chray.Track WHERE tid = '"+tid+"' AND duration <= '"+filterValue+"';");
-                    ResultSet durationRS = stmt.getResultSet();
-                    while (durationRS.next()) {
-                        stmt.executeQuery("SELECT * FROM Track WHERE tid = '"+tid+"';");
-                        ResultSet trackRS = stmt.getResultSet();
-                        trackRS.next();
-                        Map<String, Object> track = new HashMap<>();
-                        track.put("tid", tid);
-                        track.put("duration", trackRS.getInt("duration"));
-                        track.put("explicit", trackRS.getBoolean("explicit"));
-                        track.put("name", trackRS.getString("name"));
-                        track.put("uri", trackRS.getString("uri"));
-                        tracks.add(track);
-                    }
-                } else if (filterType.equals("album")) {
-                    stmt.executeQuery("SELECT * FROM chray.Album WHERE name = '"+filterValue+"';");
-                    ResultSet albumRS = stmt.getResultSet();
-                    albumRS.next();
-                    String albumID = albumRS.getString("albumID");
-                    stmt.executeQuery("SELECT * FROM chray.AlbumTracks WHERE tid = '"+tid+"' AND albumID = '"+albumID+"';");
-                    ResultSet albumTracksRS = stmt.getResultSet();
-                    while (albumTracksRS.next()) {
-                        stmt.executeQuery("SELECT * FROM Track WHERE tid = '"+tid+"';");
-                        ResultSet trackRS = stmt.getResultSet();
-                        trackRS.next();
-                        Map<String, Object> track = new HashMap<>();
-                        track.put("tid", tid);
-                        track.put("duration", trackRS.getInt("duration"));
-                        track.put("explicit", trackRS.getBoolean("explicit"));
-                        track.put("name", trackRS.getString("name"));
-                        track.put("uri", trackRS.getString("uri"));
-                        tracks.add(track);
-                    }
+            if (filterType.equals("artist")) {
+                String query = "SELECT * FROM chray.Track WHERE tid IN " +
+                        "(SELECT tid FROM chray.PlaylistTracks WHERE pid = ? AND tid IN" +
+                        "(SELECT tid FROM chray.Performances WHERE aid IN" +
+                        "(SELECT aid FROM chray.Artist WHERE name = ?)));";
+                PreparedStatement preparedStmt = this.connect.prepareStatement(query);
+                preparedStmt.setInt(1, pid);
+                preparedStmt.setString(2, filterValue);
+                preparedStmt.executeQuery();
+                ResultSet artistRS = preparedStmt.getResultSet();
+                while (artistRS.next()) {
+                    String tid = artistRS.getString("tid");
+                    tracks.add(this.grabSong(tid));
+                }
+            } else if (filterType.equals("album")) {
+                String query = "SELECT * FROM chray.Track WHERE tid IN " +
+                        "(SELECT tid FROM chray.PlaylistTracks WHERE pid = ? AND tid IN" +
+                        "(SELECT tid FROM chray.AlbumTracks WHERE albumID IN" +
+                        "(SELECT albumID FROM chray.Album WHERE name = ?)));";
+                PreparedStatement preparedStmt = this.connect.prepareStatement(query);
+                preparedStmt.setInt(1, pid);
+                preparedStmt.setString(2, filterValue);
+                preparedStmt.executeQuery();
+                ResultSet albumRS = preparedStmt.getResultSet();
+                while (albumRS.next()) {
+                    String tid = albumRS.getString("tid");
+                    tracks.add(this.grabSong(tid));
                 }
             }
             return tracks;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public Map<String, Object> mostListenedTrack(int pid) {
+        try {
+            Statement stmt = this.connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT tid, COUNT(*) AS count " +
+                                                    "FROM chray.Plays " +
+                                                    "WHERE tid IN (SELECT tid FROM chray.PlaylistTracks WHERE pid = '" + Integer.toString(pid) + "') " +
+                                                    "GROUP BY tid ORDER BY count DESC LIMIT 1;");
+            rs.next();
+            String tid = rs.getString("tid");
+            int count = rs.getInt("count");
+            Map<String, Object> track = this.grabSong(tid);
+            track.put("count", count);
+            return track;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String mostListenedGenre(int pid) {
+        try {
+            Map<String, Object> mostListenedArtist = this.mostListenedArtist(pid);
+            String aid = (String) mostListenedArtist.get("aid");
+            Statement stmt = this.connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT genre, COUNT(*) AS count " +
+                                                    "FROM chray.ArtistGenres " +
+                                                    "WHERE aid = '" + aid + "' " +
+                                                    "GROUP BY genre ORDER BY count DESC LIMIT 1;");
+            rs.next();
+            String genre = rs.getString("genre");
+            return genre;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Map<String, Object> mostListenedArtist(int pid) {
+        try {
+            Statement stmt = this.connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT aid, COUNT(*) AS count " +
+                                                    "FROM chray.Performances " +
+                                                    "WHERE aid IN (SELECT aid FROM chray.ArtistAlbums WHERE albumID IN " +
+                                                                    "(SELECT albumID FROM chray.AlbumTracks WHERE tid IN " +
+                                                                        "(SELECT tid FROM chray.PlaylistTracks WHERE pid = '" + Integer.toString(pid) + "'))) " +
+                                                    "GROUP BY aid ORDER BY count DESC LIMIT 1;");
+            rs.next();
+            String aid = rs.getString("aid");
+            int count = rs.getInt("count");
+            Map<String, Object> artist = this.grabArtist(aid);
+            artist.put("count", count);
+            return artist;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Map<String, Object> mostListenedAlbum(int pid) {
+        try {
+            Statement stmt = this.connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT albumID, COUNT(*) AS count " +
+                                                    "FROM chray.AlbumTracks " +
+                                                    "WHERE tid IN (SELECT tid FROM chray.PlaylistTracks WHERE pid = '" + Integer.toString(pid) + "') " +
+                                                    "GROUP BY albumID ORDER BY count DESC LIMIT 1;");
+            rs.next();
+            String albumID = rs.getString("albumID");
+            int count = rs.getInt("count");
+            Map<String, Object> album = this.grabAlbum(albumID);
+            album.put("count", count);
+            return album;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String mostListenedDay(int pid) {
+        try {
+            Statement stmt = this.connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT datePlayed, COUNT(*) AS count " +
+                                                    "FROM chray.Plays " +
+                                                    "WHERE tid IN (SELECT tid FROM chray.PlaylistTracks WHERE pid = '" + Integer.toString(pid) + "') " +
+                                                    "GROUP BY datePlayed ORDER BY count DESC LIMIT 1;");
+            rs.next();
+            String date = rs.getString("datePlayed");
+            return date;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public int totalMinutesListened(int pid) {
+        try {
+            long totalmsListened = 0;
+            Statement stmt = this.connect.createStatement();
+//    Calculate based on plays table
+            ResultSet rs = stmt.executeQuery("SELECT * FROM chray.Plays WHERE tid IN (SELECT tid FROM chray.PlaylistTracks WHERE pid = '" + Integer.toString(pid) + "');");
+            while (rs.next()) {
+                Statement stmt2 = this.connect.createStatement();
+                String tid = rs.getString("tid");
+                ResultSet rs2 = stmt2.executeQuery("SELECT * FROM chray.Track WHERE tid = '" + tid + "';");
+                rs2.next();
+                totalmsListened += rs2.getInt("duration");
+            }
+            return (int) (totalmsListened / 60000);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public int playlistLength(int pid) {
+        try {
+            Statement stmt = this.connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * From chray.Track WHERE tid IN (SELECT tid FROM chray.PlaylistTracks WHERE pid = '" + Integer.toString(pid) + "');");
+            int playlistLength = 0;
+            while (rs.next()) {
+                playlistLength += rs.getInt("duration");
+            }
+            return playlistLength/60000;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
         }
     }
 
@@ -357,10 +499,29 @@ class SQLConnector {
         for (Map<String, Object> track : playlistSongs) {
             System.out.println(track.get("name"));
         }
-        ArrayList<Map<String, Object>> filtered = sql.filterPlaylistBy(4, "artist", "Lil Uzi Vert");
-        for (Map<String, Object> track : filtered) {
+        ArrayList<Map<String, Object>> filteredArtist = sql.filterPlaylistBy(4, "artist", "Lil Uzi Vert");
+        for (Map<String, Object> track : filteredArtist) {
             System.out.println(track.get("name"));
         }
+        ArrayList<Map<String, Object>> filteredAlbum = sql.filterPlaylistBy(4, "album", "UTOPIA");
+        for (Map<String, Object> track : filteredAlbum) {
+            System.out.println(track.get("name"));
+        }
+        String mostListenedTrack = (String) sql.mostListenedTrack(4).get("name");
+        System.out.println(mostListenedTrack);
+        String mostListenedGenre = sql.mostListenedGenre(4);
+        System.out.println(mostListenedGenre);
+        String mostListenedArtist = (String) sql.mostListenedArtist(4).get("name");
+        System.out.println(mostListenedArtist);
+        String mostListenedAlbum = (String) sql.mostListenedAlbum(4).get("name");
+        System.out.println(mostListenedAlbum);
+        String mostListenedDay = sql.mostListenedDay(4);
+        System.out.println(mostListenedDay);
+        int totalMinutesListened = sql.totalMinutesListened(4);
+        System.out.println(totalMinutesListened);
+        int playlistLength = sql.playlistLength(4);
+        System.out.println(playlistLength);
+
 //        sql.clearTables();
 //        System.out.println("Adding Songs");
 //        ArrayList<String> desiredSongs = new ArrayList<>();
