@@ -67,29 +67,9 @@ public class APIPuller {
         return data;
     }
 
-    public Map<String, ArrayList<Map<String, Object>>>  querySpotify(String artist, String album, String track) throws IOException, InterruptedException {
-        boolean has_artist = artist.equals("") ? false : true;
-        boolean has_album = album.equals("") ? false : true;
-        boolean has_track = track.equals("") ? false : true;
+    public Map<String, ArrayList<Map<String, Object>>>  querySpotify(String track) throws IOException, InterruptedException {
         String query = "https://api.spotify.com/v1/search?q=";
-        query += artist + " ";
-        query += album + " ";
-        query += track + "&type=";
-        if (has_artist) {
-            query += "artist";
-        }
-        if (has_album) {
-            if (has_artist) {
-                query += ",";
-            }
-            query += "album";
-        }
-        if (has_track) {
-            if (has_artist || has_album) {
-                query += ",";
-            }
-            query += "track";
-        }
+        query += track + "&type=track";
         String token = getAccessToken();
         query = query.replace(" ", "%20");
         String url = query;
@@ -98,33 +78,54 @@ public class APIPuller {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> map = mapper.readValue(data, Map.class);
         Map<String, ArrayList<Map<String, Object>>> querySet = new LinkedHashMap<String, ArrayList<Map<String, Object>>>();
-        if (has_artist) {
-            ArrayList<Map<String, Object>> artistSet = this.parseQuerySet(map, "artists");
-            querySet.put("artists", artistSet);
-        } else {
-            querySet.put("artists", new ArrayList<Map<String, Object>>());
-        }
-        if (has_album) {
-            ArrayList<Map<String, Object>> albumSet = this.parseQuerySet(map, "albums");
-            querySet.put("albums", albumSet);
-        } else {
-            querySet.put("albums", new ArrayList<Map<String, Object>>());
-        }
-        if (has_track) {
-            ArrayList<Map<String, Object>> trackSet = this.parseQuerySet(map, "tracks");
-            querySet.put("tracks", trackSet);
-        } else {
-            querySet.put("tracks", new ArrayList<Map<String, Object>>());
-        }
+        ArrayList<Map<String, Object>> trackSet = this.parseQuerySet(map, "tracks");
+        querySet.put("tracks", trackSet);
+//        if (has_artist) {
+//            ArrayList<Map<String, Object>> artistSet = this.parseQuerySet(map, "artists");
+//            ArrayList<Map<String, Object>> parsedArtistSet = new ArrayList<Map<String, Object>>();
+//            for (Map<String, Object> artistMap : artistSet) {
+//                String artistID = (String) artistMap.get("id");
+//                Map<String, Object> fullArtist = this.getArtist(artistID);
+//                parsedArtistSet.add(this.parseArtist((LinkedHashMap<String, Object>) fullArtist));
+//            }
+//            querySet.put("artists", parsedArtistSet);
+//        } else {
+//            querySet.put("artists", new ArrayList<Map<String, Object>>());
+//        }
+//        if (has_album) {
+//            ArrayList<Map<String, Object>> albumSet = this.parseQuerySet(map, "albums");
+//            querySet.put("albums", albumSet);
+//        } else {
+//            querySet.put("albums", new ArrayList<Map<String, Object>>());
+//        }
+//        if (has_track) {
+//
+//        } else {
+//            querySet.put("tracks", new ArrayList<Map<String, Object>>());
+//        }
         return querySet;
     }
 
-    public String getArtist(String artistID) throws IOException, InterruptedException {
+    public Map<String, Object> getArtist(String artistID) throws IOException, InterruptedException {
         String token = getAccessToken();
         String url = "https://api.spotify.com/v1/artists/"+artistID;
         String header = "Authorization:Bearer "+token;
         String data = makeGetReqeust(url, header);
-        return data;
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> map = mapper.readValue(data, Map.class);
+        Map<String, Object> artist = this.parseArtist((LinkedHashMap<String, Object>) map);
+        return artist;
+    }
+
+    public Map<String, Object> getAlbum(String albumID) throws IOException, InterruptedException {
+        String token = getAccessToken();
+        String url = "https://api.spotify.com/v1/albums/"+albumID;
+        String header = "Authorization:Bearer "+token;
+        String data = makeGetReqeust(url, header);
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> map = mapper.readValue(data, Map.class);
+        Map<String, Object> album = this.parseAlbum((LinkedHashMap<String, Object>) map);
+        return album;
     }
 
     public Map<String, Object> getTrack(String trackID) throws IOException, InterruptedException {
@@ -137,13 +138,17 @@ public class APIPuller {
         Map<String, Object> map = mapper.readValue(data, Map.class);
         // Load the album
         LinkedHashMap<String, Object> albumData = (LinkedHashMap<String, Object>) map.get("album");
+        System.out.println(albumData);
         Map<String, Object> album = this.parseAlbum(albumData);
-        returnTrackData.put("album", album);
+        String albumID = (String) album.get("id");
+        Map<String, Object> fullAlbum = this.getAlbum(albumID);;
+        returnTrackData.put("album", fullAlbum);
         // Load the artist
         ArrayList<LinkedHashMap<String, Object>> items = (ArrayList<LinkedHashMap<String, Object>>) map.get("artists");
         ArrayList<Map<String, Object>> itemSet = new ArrayList<Map<String, Object>>();
         for (LinkedHashMap<String, Object> item : items) {
-            itemSet.add(this.parseArtist(item));
+            Map<String, Object> fullArtist = this.getArtist((String) item.get("id"));
+            itemSet.add(fullArtist);
         }
         returnTrackData.put("artists", itemSet);
         // Load the track
@@ -187,6 +192,8 @@ public class APIPuller {
         trackMap.put("duration_ms", track.get("duration_ms"));
         trackMap.put("explicit", track.get("explicit"));
         trackMap.put("uri", track.get("uri"));
+        ArrayList<String> artistIDs = new ArrayList<String>();
+
         return trackMap;
     }
     public ArrayList<Map<String, Object>> parseQuerySet(Map<String, Object> map, String type) {
@@ -206,14 +213,22 @@ public class APIPuller {
     }
     public static void main(String[] args) throws IOException, InterruptedException {
         APIPuller api = new APIPuller();
-        String artist = "";
-        String album = "";
-        String track = "just wanna rock";
+        String trackID = "4FyesJzVpA39hbYvcseO2d";
         try {
-            Map<String, ArrayList<Map<String, Object>>>  querySet = api.querySpotify(artist, album, track);
-            System.out.println(querySet);
+            Map<String, Object> track = api.getTrack(trackID);
+            System.out.println(track);
         } catch (IOException e) {
             e.printStackTrace();
         }
+//        String artistID = "4O15NlyKLIASxsJ0PrXPfz";
+//        String artist = "";
+//        String album = "";
+//        String track = "just wanna rock";
+//        try {
+//            Map<String, ArrayList<Map<String, Object>>>  querySet = api.querySpotify(artist, album, track);
+//            System.out.println(querySet);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }
