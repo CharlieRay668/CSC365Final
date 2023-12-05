@@ -484,11 +484,11 @@ class SQLConnector {
             Statement stmt = this.connect.createStatement();
 //    Calculate based on plays table
             ResultSet rs = stmt.executeQuery(
-            "SELECT SUM(T.duration) FROM" +
-                    "Track AS T, Plays as P, PlaylistTracks AS PT" +
+            "SELECT SUM(T.duration) AS totalMS FROM" +
+                    "Track T, Plays P, PlaylistTracks PT" +
                     "WHERE T.tid = P.tid AND PT.pid = " + Integer.toString(pid) + " AND PT.tid = T.tid;");
             rs.next();
-            totalmsListened += rs.getLong(1);
+            totalmsListened += rs.getLong("totalMS");
             return (long) (totalmsListened / 60000);
         } catch (Exception e) {
             e.printStackTrace();
