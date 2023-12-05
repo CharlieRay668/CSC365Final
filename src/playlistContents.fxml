@@ -18,7 +18,7 @@
             <Font name="Dubai Bold" size="36.0" />
          </font>
       </Label>
-      <ListView fx:id="songList" layoutX="55.0" layoutY="126.0" prefHeight="599.0" prefWidth="485.0" />
+      <ListView fx:id="songList" layoutX="55.0" layoutY="126.0" onMouseClicked="#pickSong" prefHeight="599.0" prefWidth="485.0" />
       <TextField fx:id="filterValueField" layoutX="55.0" layoutY="87.0" prefHeight="39.0" prefWidth="271.0" promptText="&quot;Artist or Album Name&quot;">
          <font>
             <Font name="Dubai Regular" size="15.0" />
@@ -29,7 +29,7 @@
             <Font name="Dubai Bold" size="16.0" />
          </font>
       </Button>
-      <Label layoutX="818.0" layoutY="170.0" prefHeight="39.0" prefWidth="200.0" text="I KNOW ?">
+      <Label fx:id="mostListenedTrack" layoutX="814.0" layoutY="170.0" prefHeight="39.0" prefWidth="200.0">
          <font>
             <Font name="Dubai Regular" size="20.0" />
          </font>
@@ -46,5 +46,77 @@
             <Font name="Dubai Regular" size="13.0" />
          </font>
       </Button>
+      <Button layoutX="540.0" layoutY="87.0" mnemonicParsing="false" onAction="#playSong" prefHeight="39.0" prefWidth="68.0" text="Play" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="39.0" layoutX="608.0" layoutY="223.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="39.0" layoutX="608.0" layoutY="275.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="39.0" layoutX="608.0" layoutY="329.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="39.0" layoutX="608.0" layoutY="380.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="39.0" layoutX="608.0" layoutY="434.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="39.0" layoutX="608.0" layoutY="484.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+      <Label layoutX="614.0" layoutY="223.0" prefHeight="39.0" prefWidth="189.0" text="Most Listened To Artist">
+         <font>
+            <Font name="Dubai Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="614.0" layoutY="275.0" prefHeight="39.0" prefWidth="189.0" text="Most Listend To Album">
+         <font>
+            <Font name="Dubai Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="614.0" layoutY="329.0" prefHeight="39.0" prefWidth="189.0" text="Most Listened To Genre:">
+         <font>
+            <Font name="Dubai Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="613.0" layoutY="380.0" prefHeight="39.0" prefWidth="200.0" text="Listen To The Most Songs On:">
+         <font>
+            <Font name="Dubai Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="614.0" layoutY="434.0" prefHeight="39.0" prefWidth="189.0" text="Total Minutes Listned:">
+         <font>
+            <Font name="Dubai Bold" size="19.0" />
+         </font>
+      </Label>
+      <Label layoutX="614.0" layoutY="484.0" prefHeight="39.0" prefWidth="189.0" text="Total Playlist Duration:">
+         <font>
+            <Font name="Dubai Bold" size="19.0" />
+         </font>
+      </Label>
+      <Label fx:id="mostListenedTrack1" layoutX="821.0" layoutY="170.0" prefHeight="39.0" prefWidth="200.0">
+         <font>
+            <Font name="Dubai Regular" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="mostListenedAlbum" layoutX="824.0" layoutY="275.0" prefHeight="39.0" prefWidth="200.0">
+         <font>
+            <Font name="Dubai Regular" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="mostListenedArtist" layoutX="824.0" layoutY="223.0" prefHeight="39.0" prefWidth="200.0">
+         <font>
+            <Font name="Dubai Regular" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="mostListenedGenre" layoutX="824.0" layoutY="329.0" prefHeight="39.0" prefWidth="200.0">
+         <font>
+            <Font name="Dubai Regular" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="mostListenedDay" layoutX="824.0" layoutY="380.0" prefHeight="39.0" prefWidth="200.0">
+         <font>
+            <Font name="Dubai Regular" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="totalMinutesListened" layoutX="824.0" layoutY="434.0" prefHeight="39.0" prefWidth="200.0">
+         <font>
+            <Font name="Dubai Regular" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="playlistLength" layoutX="824.0" layoutY="484.0" prefHeight="39.0" prefWidth="200.0">
+         <font>
+            <Font name="Dubai Regular" size="20.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

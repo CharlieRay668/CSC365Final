@@ -29,27 +29,28 @@ public class playlistContentsController {
     @FXML
     TextField filterValueField;
 
-//    @FXML
+    @FXML
     Label mostListenedTrack;
 
-//    @FXML
+    @FXML
     Label mostListenedArtist;
 
-//    @FXML
+    @FXML
     Label mostListenedAlbum;
 
-//    @FXML
+    @FXML
     Label mostListenedGenre;
 
-//    @FXML
+    @FXML
     Label mostListenedDay;
 
-//    @FXML
+    @FXML
     Label totalMinutesListened;
 
-//    @FXML
+    @FXML
     Label playlistLength;
 
+    String selectedSong;
 
     @FXML
     ListView songList;
@@ -66,10 +67,13 @@ public class playlistContentsController {
     }
     @FXML
     public void pickSong(MouseEvent arg0) {
-//        TrackResult entry = (TrackResult) songList.getSelectionModel().getSelectedItem();
-//        trackResult = entry.getId();
-//        System.out.println(trackResult);
-
+        TrackResult entry = (TrackResult) songList.getSelectionModel().getSelectedItem();
+        selectedSong = entry.getId();
+        System.out.println(selectedSong);
+    }
+    public void playSong(ActionEvent e){
+        connector.playSong(selectedSong);
+        getData();
     }
 
     public void getData() {
