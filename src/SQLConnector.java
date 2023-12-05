@@ -486,7 +486,7 @@ class SQLConnector {
             ResultSet rs = stmt.executeQuery(
             "SELECT SUM(T.duration) FROM" +
                     "Track AS T, Plays as P, PlaylistTracks AS PT" +
-                    "WHERE T.tid = P.tid AND PT.pid = '" + Integer.toString(pid) + "' AND PT.tid = T.tid;");
+                    "WHERE T.tid = P.tid AND PT.pid = " + Integer.toString(pid) + " AND PT.tid = T.tid;");
             rs.next();
             totalmsListened += rs.getLong(1);
             return (long) (totalmsListened / 60000);
