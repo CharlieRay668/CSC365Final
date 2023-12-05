@@ -87,7 +87,7 @@ public class playlistContentsController {
     public void fillSongList(String playlistName){
         int pid = connector.getpidFromPname(playlistName);
         List<Map<String, Object>> tracks = connector.getPlaylistSongs(pid);
-        ObservableList<String> trackNames = FXCollections.observableArrayList();
+        ObservableList<TrackResult> trackNames = FXCollections.observableArrayList();
         for (Map<String, Object> track : tracks) {
             String entry = (String) track.get("name");
             String tid = (String) track.get("tid");
@@ -95,7 +95,8 @@ public class playlistContentsController {
             for (String artist : artists) {
                 entry += " - " + artist;
             }
-            trackNames.add(entry);
+            TrackResult entry2 = new TrackResult(entry, tid);
+            trackNames.add(entry2);
         }
         songList.setItems(trackNames);
     }
@@ -112,14 +113,15 @@ public class playlistContentsController {
     public void filterByArtist(String artistName) {
         int pid = connector.getpidFromPname(globalPlaylistName);
         List<Map<String, Object>> tracks = connector.filterPlaylistBy(pid, "artist", artistName);
-        ObservableList<String> trackNames = FXCollections.observableArrayList();
+        ObservableList<TrackResult> trackNames = FXCollections.observableArrayList();
         for (Map<String, Object> track : tracks) {
             String entry = (String) track.get("name");
             ArrayList<String> artists = connector.getTrackArtists((String) track.get("tid"));
             for (String artist : artists) {
                 entry += " - " + artist;
             }
-            trackNames.add(entry);
+            TrackResult entry2 = new TrackResult(entry, (String) track.get("tid"));
+            trackNames.add(entry2);
         }
         songList.setItems(trackNames);
     }
@@ -127,14 +129,15 @@ public class playlistContentsController {
     public void filterByAlbum(String albumName) {
         int pid = connector.getpidFromPname(globalPlaylistName);
         List<Map<String, Object>> tracks = connector.filterPlaylistBy(pid, "album", albumName);
-        ObservableList<String> trackNames = FXCollections.observableArrayList();
+        ObservableList<TrackResult> trackNames = FXCollections.observableArrayList();
         for (Map<String, Object> track : tracks) {
             String entry = (String) track.get("name");
             ArrayList<String> artists = connector.getTrackArtists((String) track.get("tid"));
             for (String artist : artists) {
                 entry += " - " + artist;
             }
-            trackNames.add(entry);
+            TrackResult entry2 = new TrackResult(entry, (String) track.get("tid"));
+            trackNames.add(entry2);
         }
         songList.setItems(trackNames);
     }
