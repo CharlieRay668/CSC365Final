@@ -507,6 +507,18 @@ class SQLConnector {
         }
     }
 
+    public String getpidFromPname(String name) {
+        try {
+            Statement stmt = this.connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM chray.Playlist WHERE name = '" + name + "';");
+            rs.next();
+            return rs.getString("pid");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void main(String[] args) {
         APIPuller api = new APIPuller();
         SQLConnector sql = new SQLConnector();

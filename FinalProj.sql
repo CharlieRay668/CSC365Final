@@ -20,7 +20,7 @@ CREATE TABLE Track (
 
 CREATE TABLE Playlist (
     pid INTEGER PRIMARY KEY AUTO_INCREMENT,
-    name varchar(200)
+    name varchar(200) UNIQUE
     );
     
 CREATE TABLE Album (
@@ -104,4 +104,9 @@ SELECT * FROM PlaylistTracks;
 SELECT * FROM AlbumTracks;
 
 INSERT INTO Playlist (name) VALUES ("Liked Songs");
+
+SELECT * FROM chray.Track WHERE tid IN 
+	(SELECT tid FROM chray.PlaylistTracks WHERE pid = 4 AND tid IN
+		(SELECT tid FROM chray.Performances WHERE aid IN
+			(SELECT aid FROM chray.Artist WHERE name = "Lil Uzi Vert")));
     
