@@ -27,12 +27,12 @@ public class Controller {
     private Stage stage;
     private Scene scene;
     private Parent root;
-
+    SQLConnector connector = new SQLConnector();
     private String trackResult;//holds the trackId of selected song to add
     @FXML
     public void initialize(){
-        List<String> playlistNames= Arrays.asList("one","two","threegvgvvyuvyuvyvyvyvy");
-        populateAddToPlaylistMenu(playlistNames);
+        List<String> playlists =connector.getPlaylistNames();
+        populateAddToPlaylistMenu(playlists);
 
     }
 
@@ -48,7 +48,8 @@ public class Controller {
         }
     }
     private void handleSelectedPlaylistItem(String playlistName) {
-        System.out.println("Playlist selected: " + playlistName);
+    int pid = connector.getpidFromPname(playlistName);
+    connector.addTrackToPlaylist(pid,trackResult);
         // Store the playlist name or perform other actions as needed
         //after inserting the trackresult into playlistName, find a way
         //to clear the search bar and clear searchResultList so it resets and looks like the action was completed
@@ -95,20 +96,8 @@ public class Controller {
         stage.setScene(scene);
         stage.show();
     }
-    public void switchToMain(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
-        stage =(Stage)((Node)event.getSource()).getScene().getWindow();
-        scene =new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-    public void switchToPlaylistContents(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("playlistContents.fxml"));
-        stage =(Stage)((Node)event.getSource()).getScene().getWindow();
-        scene =new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
+
+
 
 
 }
