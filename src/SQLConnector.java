@@ -483,7 +483,7 @@ class SQLConnector {
             long totalmsListened = 0;
             Statement stmt = this.connect.createStatement();
 //    Calculate based on plays table
-            ResultSet rs = stmt.executeQuery("SELECT * FROM chray.Track WHERE tid = (SELECT tid FROM chray.Plays WHERE tid IN (SELECT tid FROM chray.PlaylistTracks WHERE pid = '" + Integer.toString(pid) + "'));");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM chray.Track WHERE tid in (SELECT tid FROM chray.Plays WHERE tid IN (SELECT tid FROM chray.PlaylistTracks WHERE pid = '" + Integer.toString(pid) + "'));");
             while (rs.next()) {
                 totalmsListened += rs.getInt("duration");
             }
