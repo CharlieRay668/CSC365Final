@@ -507,15 +507,15 @@ class SQLConnector {
         }
     }
 
-    public String getpidFromPname(String name) {
+    public int getpidFromPname(String name) {
         try {
             Statement stmt = this.connect.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM chray.Playlist WHERE name = '" + name + "';");
             rs.next();
-            return rs.getString("pid");
+            return rs.getInt("pid");
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return -1;
         }
     }
 
