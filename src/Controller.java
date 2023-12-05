@@ -1,4 +1,6 @@
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,6 +44,7 @@ public class Controller {
             MenuItem item = new MenuItem(playlist);
             item.setOnAction(event -> handleSelectedPlaylistItem(playlist));
             addToPlaylistButton.getItems().add(item);
+
         }
     }
     private void handleSelectedPlaylistItem(String playlistName) {
@@ -72,6 +75,19 @@ public class Controller {
         }
         mainSearchResults.setItems(searchResults);
     }
+
+    @FXML
+    public void chooseTrack(MouseEvent arg0) {
+        TrackResult entry = (TrackResult) mainSearchResults.getSelectionModel().getSelectedItem();
+        trackResult = entry.getId();
+        System.out.println(trackResult);
+
+    }
+
+//    another fiunctiopn {
+//        ADD TO PLAYLIST GLOBVAFL VAR
+//    }
+
     public void switchToPlaylists(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("playlists.fxml"));
         stage =(Stage)((Node)event.getSource()).getScene().getWindow();
@@ -93,4 +109,6 @@ public class Controller {
         stage.setScene(scene);
         stage.show();
     }
+
+
 }
