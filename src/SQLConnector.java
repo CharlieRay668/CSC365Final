@@ -492,6 +492,21 @@ class SQLConnector {
         }
     }
 
+    public ArrayList<String> getPlaylistNames() {
+        try {
+            Statement stmt = this.connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM chray.Playlist;");
+            ArrayList<String> playlistNames = new ArrayList<>();
+            while (rs.next()) {
+                playlistNames.add(rs.getString("name"));
+            }
+            return playlistNames;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void main(String[] args) {
         APIPuller api = new APIPuller();
         SQLConnector sql = new SQLConnector();

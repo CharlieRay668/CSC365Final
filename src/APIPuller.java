@@ -138,7 +138,6 @@ public class APIPuller {
         Map<String, Object> map = mapper.readValue(data, Map.class);
         // Load the album
         LinkedHashMap<String, Object> albumData = (LinkedHashMap<String, Object>) map.get("album");
-        System.out.println(albumData);
         Map<String, Object> album = this.parseAlbum(albumData);
         String albumID = (String) album.get("id");
         Map<String, Object> fullAlbum = this.getAlbum(albumID);;
@@ -214,12 +213,21 @@ public class APIPuller {
     public static void main(String[] args) throws IOException, InterruptedException {
         APIPuller api = new APIPuller();
         String trackID = "4FyesJzVpA39hbYvcseO2d";
-        try {
-            Map<String, Object> track = api.getTrack(trackID);
-            System.out.println(track);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String token = api.getAccessToken();
+        String url = "https://api.spotify.com/v1/me/player/devices";
+        String header = "Authorization:Bearer "+token;
+        String data = api.makeGetReqeust(url, header);
+        System.out.println(data);
+//        try {
+//            Map<String, Object> track = api.getTrack(trackID);
+//            System.out.println(track);
+//            String query = "just wanna rock";
+//            Map<String, ArrayList<Map<String, Object>>> querySet = api.querySpotify(query);
+//            ArrayList<Map<String, Object>> tracks = querySet.get("tracks");
+//            System.out.println(tracks);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 //        String artistID = "4O15NlyKLIASxsJ0PrXPfz";
 //        String artist = "";
 //        String album = "";
