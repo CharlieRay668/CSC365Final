@@ -478,7 +478,7 @@ class SQLConnector {
         }
     }
 
-    public int totalMinutesListened(int pid) {
+    public long totalMinutesListened(int pid) {
         try {
             long totalmsListened = 0;
             Statement stmt = this.connect.createStatement();
@@ -491,14 +491,14 @@ class SQLConnector {
                 rs2.next();
                 totalmsListened += rs2.getInt("duration");
             }
-            return (int) (totalmsListened / 60000);
+            return (long) (totalmsListened / 60000);
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
     }
 
-    public int playlistLength(int pid) {
+    public long playlistLength(int pid) {
         try {
             Statement stmt = this.connect.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * From chray.Track WHERE tid IN (SELECT tid FROM chray.PlaylistTracks WHERE pid = '" + Integer.toString(pid) + "');");
@@ -565,9 +565,9 @@ class SQLConnector {
         System.out.println(mostListenedAlbum);
         String mostListenedDay = sql.mostListenedDay(4);
         System.out.println(mostListenedDay);
-        int totalMinutesListened = sql.totalMinutesListened(4);
+        long totalMinutesListened = sql.totalMinutesListened(4);
         System.out.println(totalMinutesListened);
-        int playlistLength = sql.playlistLength(4);
+        long playlistLength = sql.playlistLength(4);
         System.out.println(playlistLength);
 
 //        sql.clearTables();

@@ -185,14 +185,14 @@ public class playlistContentsController {
 
     public void displayTotalMinutesListened() {
         int pid = connector.getpidFromPname(globalPlaylistName);
-        int minutes = connector.totalMinutesListened(pid);
-        totalMinutesListened.setText(Integer.toString(minutes));
+        long minutes = connector.totalMinutesListened(pid);
+        totalMinutesListened.setText(Long.toString(minutes));
     }
 
     public void displayPlaylistLength() {
         int pid = connector.getpidFromPname(globalPlaylistName);
-        int length = connector.playlistLength(pid);
-        playlistLength.setText(Integer.toString(length));
+        long length = connector.playlistLength(pid);
+        playlistLength.setText(Long.toString(length));
     }
 
     public void switchToMain(ActionEvent event) throws IOException {
