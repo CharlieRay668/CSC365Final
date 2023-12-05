@@ -56,12 +56,20 @@ public class playlistContentsController {
 
     public void displayPlaylistName(String name){
         globalPlaylistName = name;
-        playlistName.setText(name);
+        playlistName.setText("Playlist: "+name);
         filterTypeBox.getItems().addAll(
                 "Artist",
                 "Album"
         );
         fillSongList(name);
+        getData();
+    }
+    @FXML
+    public void pickSong(MouseEvent arg0) {
+//        TrackResult entry = (TrackResult) songList.getSelectionModel().getSelectedItem();
+//        trackResult = entry.getId();
+//        System.out.println(trackResult);
+
     }
 
     public void getData() {
@@ -73,7 +81,9 @@ public class playlistContentsController {
         displayTotalMinutesListened();
         displayPlaylistLength();
     }
-
+    public void resetSongs(ActionEvent e){
+        fillSongList(globalPlaylistName);
+    }
     public void fillSongList(String playlistName){
         int pid = connector.getpidFromPname(playlistName);
         List<Map<String, Object>> tracks = connector.getPlaylistSongs(pid);

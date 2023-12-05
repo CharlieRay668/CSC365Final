@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="779.0" prefWidth="1032.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="playlistContentsController">
@@ -23,12 +24,27 @@
             <Font name="Dubai Regular" size="15.0" />
          </font>
       </TextField>
-      <Button layoutX="443.0" layoutY="87.0" mnemonicParsing="false" onAction="#filter" prefHeight="4.0" prefWidth="97.0" text="Filter">
+      <Button layoutX="417.0" layoutY="87.0" mnemonicParsing="false" onAction="#filter" prefHeight="39.0" prefWidth="68.0" text="Filter">
          <font>
             <Font name="Dubai Bold" size="16.0" />
          </font>
       </Button>
-      <Label layoutX="617.0" layoutY="202.0" prefHeight="29.0" prefWidth="159.0" text="Label" />
-      <ComboBox fx:id="filterTypeBox" layoutX="326.0" layoutY="87.0" prefHeight="39.0" prefWidth="119.0" promptText="Filter By" />
+      <Label layoutX="818.0" layoutY="170.0" prefHeight="39.0" prefWidth="200.0" text="I KNOW ?">
+         <font>
+            <Font name="Dubai Regular" size="20.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="filterTypeBox" layoutX="326.0" layoutY="87.0" prefHeight="39.0" prefWidth="91.0" promptText="Filter By" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="39.0" layoutX="608.0" layoutY="170.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+      <Label layoutX="618.0" layoutY="170.0" prefHeight="39.0" prefWidth="189.0" text="Most Listened To Track:">
+         <font>
+            <Font name="Dubai Bold" size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="485.0" layoutY="87.0" mnemonicParsing="false" onAction="#resetSongs" prefHeight="39.0" prefWidth="56.0" text="Reset">
+         <font>
+            <Font name="Dubai Regular" size="13.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
