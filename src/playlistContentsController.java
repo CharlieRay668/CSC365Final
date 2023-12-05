@@ -21,18 +21,151 @@ public class playlistContentsController {
 
     @FXML
     Label playlistName;
+    String globalPlaylistName;
+
+//    @FXML
+    ComboBox filterTypeBox;
+
+//    @FXML
+    TextField filterValueField;
+
+//    @FXML
+    Label mostListenedTrack;
+
+//    @FXML
+    Label mostListenedArtist;
+
+//    @FXML
+    Label mostListenedAlbum;
+
+//    @FXML
+    Label mostListenedGenre;
+
+//    @FXML
+    Label mostListenedDay;
+
+//    @FXML
+    Label totalMinutesListened;
+
+//    @FXML
+    Label playlistLength;
+
 
     @FXML
     ListView songList;
 
     public void displayPlaylistName(String name){
+        globalPlaylistName = name;
         playlistName.setText(name);
+        filterTypeBox.getItems().addAll(
+                "Artist",
+                "Album"
+        );
+        fillSongList(name);
     }
-    public void fillSongList(String albumName){
-
-
-       // songList.setItems();
+    public void fillSongList(String playlistName){
+        int pid = connector.getpidFromPname(playlistName);
+        List<Map<String, Object>> tracks = connector.getPlaylistSongs(pid);
+        ObservableList<String> trackNames = FXCollections.observableArrayList();
+        for (Map<String, Object> track : tracks) {
+            String entry = (String) track.get("trackName");
+            ArrayList<Map<String, Object>> artists = (ArrayList<Map<String, Object>>) track.get("artists");
+            for (Map<String, Object> artist : artists) {
+                entry += " - " + (String) artist.get("name");
+            }
+            trackNames.add(entry);
+        }
+        songList.setItems(trackNames);
     }
+
+    public void filter() {
+        String filterType = (String) filterTypeBox.getValue();
+        String filterValue = filterValueField.getText();
+        if (filterType.equals("Artist")) {
+            filterByArtist(filterValue);
+        } else if (filterType.equals("Album")) {
+            filterByAlbum(filterValue);
+        }
+    }
+    public void filterByArtist(String artistName) {
+        int pid = connector.getpidFromPname(globalPlaylistName);
+        List<Map<String, Object>> tracks = connector.filterPlaylistBy(pid, "artist", artistName);
+        ObservableList<String> trackNames = FXCollections.observableArrayList();
+        for (Map<String, Object> track : tracks) {
+            String entry = (String) track.get("trackName");
+            ArrayList<Map<String, Object>> artists = (ArrayList<Map<String, Object>>) track.get("artists");
+            for (Map<String, Object> artist : artists) {
+                entry += " - " + (String) artist.get("name");
+            }
+            trackNames.add(entry);
+        }
+        songList.setItems(trackNames);
+    }
+
+    public void filterByAlbum(String albumName) {
+        int pid = connector.getpidFromPname(globalPlaylistName);
+        List<Map<String, Object>> tracks = connector.filterPlaylistBy(pid, "album", albumName);
+        ObservableList<String> trackNames = FXCollections.observableArrayList();
+        for (Map<String, Object> track : tracks) {
+            String entry = (String) track.get("trackName");
+            ArrayList<Map<String, Object>> artists = (ArrayList<Map<String, Object>>) track.get("artists");
+            for (Map<String, Object> artist : artists) {
+                entry += " - " + (String) artist.get("name");
+            }
+            trackNames.add(entry);
+        }
+        songList.setItems(trackNames);
+    }
+
+    public void displayMostListenedTrack() {
+        int pid = connector.getpidFromPname(globalPlaylistName);
+        Map<String, Object> track = connector.mostListenedTrack(pid);
+        String entry = (String) track.get("trackName");
+        ArrayList<Map<String, Object>> artists = (ArrayList<Map<String, Object>>) track.get("artists");
+        for (Map<String, Object> artist : artists) {
+            entry += " - " + (String) artist.get("name");
+        }
+        mostListenedTrack.setText(entry);
+    }
+
+    public void displayMostListenedArtist() {
+        int pid = connector.getpidFromPname(globalPlaylistName);
+        Map<String, Object> artist = connector.mostListenedArtist(pid);
+        String entry = (String) artist.get("name");
+        mostListenedArtist.setText(entry);
+    }
+
+    public void displayMostListenedAlbum() {
+        int pid = connector.getpidFromPname(globalPlaylistName);
+        Map<String, Object> album = connector.mostListenedAlbum(pid);
+        String entry = (String) album.get("albumName");
+        mostListenedAlbum.setText(entry);
+    }
+
+    public void displayMostListenedGenre() {
+        int pid = connector.getpidFromPname(globalPlaylistName);
+        String genre = connector.mostListenedGenre(pid);
+        mostListenedGenre.setText(genre);
+    }
+
+    public void displayMostListenedDay() {
+        int pid = connector.getpidFromPname(globalPlaylistName);
+        String day = connector.mostListenedDay(pid);
+        mostListenedDay.setText(day);
+    }
+
+    public void displayTotalMinutesListened() {
+        int pid = connector.getpidFromPname(globalPlaylistName);
+        int minutes = connector.totalMinutesListened(pid);
+        totalMinutesListened.setText(Integer.toString(minutes));
+    }
+
+    public void displayPlaylistLength() {
+        int pid = connector.getpidFromPname(globalPlaylistName);
+        int length = connector.playlistLength(pid);
+        playlistLength.setText(Integer.toString(length));
+    }
+
     public void switchToMain(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
         stage =(Stage)((Node)event.getSource()).getScene().getWindow();
