@@ -139,6 +139,27 @@ class SQLConnector {
         }
     }
 
+    public ArrayList<String> getTrackArtists(String tid) {
+        try {
+            Statement stmt = this.connect.createStatement();
+            stmt.executeQuery("SELECT * FROM chray.Performances WHERE tid = '"+tid+"';");
+            ResultSet rs = stmt.getResultSet();
+            ArrayList<String> artists = new ArrayList<>();
+            while (rs.next()) {
+                String aid = rs.getString("aid");
+                Statement stmt2 = this.connect.createStatement();
+                stmt2.executeQuery("SELECT * FROM chray.Artist WHERE aid = '"+aid+"';");
+                ResultSet rs2 = stmt2.getResultSet();
+                rs2.next();
+                artists.add(rs2.getString("name"));
+            }
+            return artists;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 //    This method operates under the assumption that the track is not already in the database,
 //    That just means that it also hits spotify's API for the rest of the information
     public void addUnseenTrack(Map<String, Object> trackInfo) throws IOException, InterruptedException {

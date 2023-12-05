@@ -68,10 +68,11 @@ public class playlistContentsController {
         List<Map<String, Object>> tracks = connector.getPlaylistSongs(pid);
         ObservableList<String> trackNames = FXCollections.observableArrayList();
         for (Map<String, Object> track : tracks) {
-            String entry = (String) track.get("trackName");
-            ArrayList<Map<String, Object>> artists = (ArrayList<Map<String, Object>>) track.get("artists");
-            for (Map<String, Object> artist : artists) {
-                entry += " - " + (String) artist.get("name");
+            String entry = (String) track.get("name");
+            String tid = (String) track.get("tid");
+            ArrayList<String> artists = connector.getTrackArtists(tid);
+            for (String artist : artists) {
+                entry += " - " + artist;
             }
             trackNames.add(entry);
         }
@@ -92,10 +93,10 @@ public class playlistContentsController {
         List<Map<String, Object>> tracks = connector.filterPlaylistBy(pid, "artist", artistName);
         ObservableList<String> trackNames = FXCollections.observableArrayList();
         for (Map<String, Object> track : tracks) {
-            String entry = (String) track.get("trackName");
-            ArrayList<Map<String, Object>> artists = (ArrayList<Map<String, Object>>) track.get("artists");
-            for (Map<String, Object> artist : artists) {
-                entry += " - " + (String) artist.get("name");
+            String entry = (String) track.get("name");
+            ArrayList<String> artists = connector.getTrackArtists((String) track.get("tid"));
+            for (String artist : artists) {
+                entry += " - " + artist;
             }
             trackNames.add(entry);
         }
@@ -107,10 +108,10 @@ public class playlistContentsController {
         List<Map<String, Object>> tracks = connector.filterPlaylistBy(pid, "album", albumName);
         ObservableList<String> trackNames = FXCollections.observableArrayList();
         for (Map<String, Object> track : tracks) {
-            String entry = (String) track.get("trackName");
-            ArrayList<Map<String, Object>> artists = (ArrayList<Map<String, Object>>) track.get("artists");
-            for (Map<String, Object> artist : artists) {
-                entry += " - " + (String) artist.get("name");
+            String entry = (String) track.get("name");
+            ArrayList<String> artists = connector.getTrackArtists((String) track.get("tid"));
+            for (String artist : artists) {
+                entry += " - " + artist;
             }
             trackNames.add(entry);
         }
@@ -120,10 +121,10 @@ public class playlistContentsController {
     public void displayMostListenedTrack() {
         int pid = connector.getpidFromPname(globalPlaylistName);
         Map<String, Object> track = connector.mostListenedTrack(pid);
-        String entry = (String) track.get("trackName");
-        ArrayList<Map<String, Object>> artists = (ArrayList<Map<String, Object>>) track.get("artists");
-        for (Map<String, Object> artist : artists) {
-            entry += " - " + (String) artist.get("name");
+        String entry = (String) track.get("name");
+        ArrayList<String> artists = connector.getTrackArtists((String) track.get("tid"));
+        for (String artist : artists) {
+            entry += " - " + artist;
         }
         mostListenedTrack.setText(entry);
     }
@@ -138,7 +139,7 @@ public class playlistContentsController {
     public void displayMostListenedAlbum() {
         int pid = connector.getpidFromPname(globalPlaylistName);
         Map<String, Object> album = connector.mostListenedAlbum(pid);
-        String entry = (String) album.get("albumName");
+        String entry = (String) album.get("name");
         mostListenedAlbum.setText(entry);
     }
 
