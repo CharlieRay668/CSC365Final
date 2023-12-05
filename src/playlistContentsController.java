@@ -63,6 +63,17 @@ public class playlistContentsController {
         );
         fillSongList(name);
     }
+
+    public void getData() {
+        displayMostListenedTrack();
+        displayMostListenedArtist();
+        displayMostListenedAlbum();
+        displayMostListenedGenre();
+        displayMostListenedDay();
+        displayTotalMinutesListened();
+        displayPlaylistLength();
+    }
+
     public void fillSongList(String playlistName){
         int pid = connector.getpidFromPname(playlistName);
         List<Map<String, Object>> tracks = connector.getPlaylistSongs(pid);
