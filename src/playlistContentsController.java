@@ -23,10 +23,10 @@ public class playlistContentsController {
     Label playlistName;
     String globalPlaylistName;
 
-//    @FXML
+    @FXML
     ComboBox filterTypeBox;
 
-//    @FXML
+    @FXML
     TextField filterValueField;
 
 //    @FXML
