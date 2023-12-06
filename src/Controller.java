@@ -57,41 +57,6 @@ public class Controller {
         //to clear the search bar and clear searchResultList so it resets and looks like the action was completed
         mainSearchResults.getItems().clear();
     }
-    //method grabs the entered track string, queries the api, fills the resultList with results
-//    public void searchMain(ActionEvent e) throws IOException, InterruptedException {
-//        progressWheel.setVisible(true);
-//        String track = trackString.getText();
-//        String limString=limitString.getText();
-//        //makes limString an optional field
-//        System.out.println(limString+"hi");
-//        int limit;
-//        if(!limString.isEmpty()){
-//             limit=Integer.valueOf(limString);
-//        }else{
-//            limit=0;
-//        }
-//
-//        System.out.println(limit);
-//        APIPuller api =new APIPuller();
-//        Map<String, ArrayList<Map<String, Object>>> results =api.querySpotify(track,limit);
-//        ArrayList<Map<String, Object>> tracks = results.get("tracks");
-//        ObservableList<TrackResult> searchResults = FXCollections.observableArrayList();
-//        for (Map<String, Object> trackMap : tracks) {
-//            String trackID2 = (String) trackMap.get("id");
-//            Map<String, Object> fullTrack = api.getTrack(trackID2);
-//            ArrayList<Map<String, Object>> artists = (ArrayList<Map<String, Object>>) fullTrack.get("artists");
-//            Map<String, Object> trackResult = (Map<String, Object>) fullTrack.get("track");
-//            String entryName = "";
-//            entryName += (String) trackResult.get("name");
-//            for (Map<String, Object> artist : artists) {
-//                entryName += ", " + (String) artist.get("name");
-//            }
-//            TrackResult entry = new TrackResult(entryName, trackID2);
-//            searchResults.add(entry);
-//        }
-//        progressWheel.setVisible(false);
-//        mainSearchResults.setItems(searchResults);
-//    }
 
     public void searchMain(ActionEvent e) {
         progressWheel.setVisible(true);

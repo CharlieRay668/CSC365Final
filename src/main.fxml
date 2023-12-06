@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="712.0" prefWidth="1054.0" style="-fx-background-color: #B0C4DE;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<AnchorPane prefHeight="712.0" prefWidth="1054.0" style="-fx-background-color: #413F43;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
-      <TextField id="trackString" fx:id="trackString" layoutX="189.0" layoutY="165.0" prefHeight="47.0" prefWidth="338.0" promptText="Enter Track Name">
+      <TextField id="trackString" fx:id="trackString" layoutX="395.0" layoutY="165.0" prefHeight="47.0" prefWidth="365.0" promptText="Enter Track Name">
          <font>
             <Font name="Dubai Regular" size="19.0" />
          </font>
       </TextField>
-      <ListView id="trackList" fx:id="mainSearchResults" layoutX="189.0" layoutY="212.0" onMouseClicked="#chooseTrack" prefHeight="351.0" prefWidth="401.0" />
-      <Button id="searchButton" layoutX="527.0" layoutY="165.0" mnemonicParsing="false" onAction="#searchMain" prefHeight="47.0" prefWidth="64.0" text="Search">
+      <ListView id="trackList" fx:id="mainSearchResults" layoutX="231.0" layoutY="212.0" onMouseClicked="#chooseTrack" prefHeight="351.0" prefWidth="593.0" style="-fx-background-color: #E1DBE7;" />
+      <Button id="searchButton" layoutX="760.0" layoutY="165.0" mnemonicParsing="false" onAction="#searchMain" prefHeight="47.0" prefWidth="64.0" text="Search">
          <font>
             <Font name="Dubai Regular" size="15.0" />
          </font>
       </Button>
       <Button layoutX="972.0" layoutY="8.0" mnemonicParsing="false" onAction="#switchToPlaylists" prefHeight="37.0" prefWidth="64.0" text="Playlists" />
       <Button layoutX="908.0" layoutY="8.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="64.0" text="Home" />
-      <MenuButton fx:id="addToPlaylistButton" layoutX="591.0" layoutY="165.0" mnemonicParsing="false" onAction="#initialize" prefHeight="47.0" prefWidth="167.0" text="Add To Playlist">
+      <MenuButton fx:id="addToPlaylistButton" layoutX="825.0" layoutY="165.0" mnemonicParsing="false" onAction="#initialize" prefHeight="47.0" prefWidth="167.0" text="Add To Playlist">
         <items>
           <MenuItem mnemonicParsing="false" text="Action 1" />
           <MenuItem mnemonicParsing="false" text="Action 2" />
@@ -33,7 +36,22 @@
             <Font name="Dubai Regular" size="18.0" />
          </font>
       </MenuButton>
-      <TextField fx:id="limitString" layoutX="189.0" layoutY="140.0" prefHeight="25.0" prefWidth="173.0" promptText=" Optional Number of Results" />
-      <ProgressIndicator fx:id="progressWheel" layoutX="157.0" layoutY="163.0" prefHeight="47.0" prefWidth="31.0" visible="false" />
+      <TextField fx:id="limitString" layoutX="231.0" layoutY="165.0" prefHeight="47.0" prefWidth="167.0" promptText=" Optional Number of Results" />
+      <ProgressIndicator fx:id="progressWheel" layoutX="194.0" layoutY="165.0" prefHeight="47.0" prefWidth="31.0" visible="false" />
+      <ImageView fx:id="spotifyLogo" fitHeight="113.0" fitWidth="121.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@logo-spotify.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="131.0" layoutY="14.0" prefHeight="85.0" prefWidth="680.0" text="Spotify Search Engine" textFill="WHITE">
+         <font>
+            <Font name="Dubai Bold" size="47.0" />
+         </font>
+      </Label>
+      <Label layoutX="231.0" layoutY="113.0" prefHeight="56.0" prefWidth="479.0" text="Search Tracks" textFill="WHITE">
+         <font>
+            <Font name="Dubai Regular" size="38.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
