@@ -425,17 +425,22 @@ class SQLConnector {
     public Map<String, Object> mostListenedArtist(int pid) {
         try {
             Statement stmt = this.connect.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT aid, COUNT(*) AS count " +
-                                                    "FROM chray.Performances " +
-                                                    "WHERE aid IN (SELECT aid FROM chray.ArtistAlbums WHERE albumID IN " +
-                                                                    "(SELECT albumID FROM chray.AlbumTracks WHERE tid IN " +
-                                                                        "(SELECT tid FROM chray.PlaylistTracks WHERE pid = '" + Integer.toString(pid) + "'))) " +
-                                                    "GROUP BY aid ORDER BY count DESC LIMIT 1;");
+            ResultSet rs = stmt.executeQuery("select aplays.aid\n" +
+                    "from(select a.aid as aid,count(plays.playID) as count\n" +
+                    "\tFrom chray.Playlist p\n" +
+                    "\tjoin chray.PlaylistTracks pt on p.pid =pt.pid\n" +
+                    "\tjoin chray.Track t on t.tid=pt.tid\n" +
+                    "\tjoin chray.Plays plays on t.tid =plays.tid\n" +
+                    "\tjoin chray.Performances pf on t.tid = pf.tid\n" +
+                    "\tjoin chray.Artist a on a.aid =pf.aid\n" +
+                    "\twhere p.pid = "+Integer.toString(pid) +
+                    "\tgroup by a.aid) as aplays\n" +
+                    "ORDER BY aplays.count DESC\n" +
+                    "LIMIT 1");
             rs.next();
             String aid = rs.getString("aid");
-            int count = rs.getInt("count");
+
             Map<String, Object> artist = this.grabArtist(aid);
-            artist.put("count", count);
             return artist;
         } catch (Exception e) {
             e.printStackTrace();
@@ -446,15 +451,21 @@ class SQLConnector {
     public Map<String, Object> mostListenedAlbum(int pid) {
         try {
             Statement stmt = this.connect.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT albumID, COUNT(*) AS count " +
-                                                    "FROM chray.AlbumTracks " +
-                                                    "WHERE tid IN (SELECT tid FROM chray.PlaylistTracks WHERE pid = '" + Integer.toString(pid) + "') " +
-                                                    "GROUP BY albumID ORDER BY count DESC LIMIT 1;");
+            ResultSet rs = stmt.executeQuery("select aplays.albumID\n" +
+                    "from(select at.albumID as albumID,count(plays.playID) as count\n" +
+                    "\tFrom chray.Playlist p\n" +
+                    "\tjoin chray.PlaylistTracks pt on p.pid =pt.pid\n" +
+                    "\tjoin chray.Track t on t.tid=pt.tid\n" +
+                    "\tjoin chray.Plays plays on t.tid =plays.tid\n" +
+                    "\tjoin chray.AlbumTracks at on at.tid = plays.tid\n" +
+                    "\twhere p.pid =" + Integer.toString(pid)+"\n" +
+                    "\tgroup by at.albumID) as aplays\n" +
+                    "ORDER BY aplays.count DESC\n" +
+                    "LIMIT 1;");
             rs.next();
             String albumID = rs.getString("albumID");
-            int count = rs.getInt("count");
+            System.out.println(albumID);
             Map<String, Object> album = this.grabAlbum(albumID);
-            album.put("count", count);
             return album;
         } catch (Exception e) {
             e.printStackTrace();
@@ -477,6 +488,33 @@ class SQLConnector {
             return null;
         }
     }
+    public int ifPlaysEmpty(String playlistName){
+        int isEmpty = 1;
+        System.out.println("isEmpty val before query:"+isEmpty);
+        try{
+            Statement stmt =this.connect.createStatement();
+            ResultSet rs =stmt.executeQuery(
+                    "select count(plays.playID) as count\n" +
+                            "From chray.Playlist p\n" +
+                            "join chray.PlaylistTracks pt on p.pid =pt.pid\n" +
+                            "join chray.Track t on t.tid=pt.tid\n" +
+                            "join chray.Plays plays on t.tid =plays.tid\n" +
+                            "where p.name='"+playlistName+"'" +
+                            "group by pt.pid;"
+            );
+            if(rs.next()){
+                int count =rs.getInt("count");
+                if(count>0){
+                    isEmpty=0;
+                }
+            }
+        } catch (SQLException e) {
+            isEmpty=1;
+            return isEmpty;
+        }
+        System.out.println("isEmpty val after query:"+isEmpty);
+        return isEmpty;
+    }
 
     public long totalMinutesListened(int pid) {
         try {
@@ -484,8 +522,8 @@ class SQLConnector {
             Statement stmt = this.connect.createStatement();
 //    Calculate based on plays table
             ResultSet rs = stmt.executeQuery(
-            "SELECT SUM(T.duration) AS totalMS FROM" +
-                    "Track T, Plays P, PlaylistTracks PT" +
+            "SELECT SUM(T.duration) AS totalMS FROM " +
+                    "chray.Track T, chray.Plays P, chray.PlaylistTracks PT " +
                     "WHERE T.tid = P.tid AND PT.pid = " + Integer.toString(pid) + " AND PT.tid = T.tid;");
             rs.next();
             totalmsListened += rs.getLong("totalMS");

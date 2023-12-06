@@ -67,7 +67,7 @@ public class APIPuller {
         return data;
     }
 
-    public Map<String, ArrayList<Map<String, Object>>>  querySpotify(String track) throws IOException, InterruptedException {
+    public Map<String, ArrayList<Map<String, Object>>>  querySpotify(String track, int limit) throws IOException, InterruptedException {
         String query = "https://api.spotify.com/v1/search?q=";
         query += track + "&type=track";
         String token = getAccessToken();
@@ -78,9 +78,12 @@ public class APIPuller {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> map = mapper.readValue(data, Map.class);
         Map<String, ArrayList<Map<String, Object>>> querySet = new LinkedHashMap<String, ArrayList<Map<String, Object>>>();
-        ArrayList<Map<String, Object>> trackSet = this.parseQuerySet(map, "tracks");
+        ArrayList<Map<String, Object>> trackSet = this.parseQuerySet(map, "tracks",limit);
         querySet.put("tracks", trackSet);
-//        if (has_artist) {
+
+        return querySet;
+    }
+    //        if (has_artist) {
 //            ArrayList<Map<String, Object>> artistSet = this.parseQuerySet(map, "artists");
 //            ArrayList<Map<String, Object>> parsedArtistSet = new ArrayList<Map<String, Object>>();
 //            for (Map<String, Object> artistMap : artistSet) {
@@ -103,8 +106,7 @@ public class APIPuller {
 //        } else {
 //            querySet.put("tracks", new ArrayList<Map<String, Object>>());
 //        }
-        return querySet;
-    }
+
 
     public Map<String, Object> getArtist(String artistID) throws IOException, InterruptedException {
         String token = getAccessToken();
@@ -195,21 +197,29 @@ public class APIPuller {
 
         return trackMap;
     }
-    public ArrayList<Map<String, Object>> parseQuerySet(Map<String, Object> map, String type) {
+    public ArrayList<Map<String, Object>> parseQuerySet(Map<String, Object> map, String type,int limit) {
         Map<String, Object> artists = (Map<String, Object>) map.get(type);
         ArrayList<LinkedHashMap<String, Object>> items = (ArrayList<LinkedHashMap<String, Object>>) artists.get("items");
         ArrayList<Map<String, Object>> itemSet = new ArrayList<Map<String, Object>>();
-        for (LinkedHashMap<String, Object> item : items) {
+        if(limit==0){
+            limit= items.size();
+        }
+        for (int i =0;i< limit;i++) {
+            if(i>=items.size()){
+                break;
+            }
             if (type.equals("artists")) {
-                itemSet.add(this.parseArtist(item));
+                itemSet.add(this.parseArtist(items.get(i)));
             } else if (type.equals("albums")) {
-                itemSet.add(this.parseAlbum(item));
+                itemSet.add(this.parseAlbum(items.get(i)));
             } else if (type.equals("tracks")) {
-                itemSet.add(this.parseTrack(item));
+                itemSet.add(this.parseTrack(items.get(i)));
             }
         }
         return itemSet;
     }
+    //LinkedHashMap<String, Object> item : items
+    //int i =0;i< 5;i++
     public static void main(String[] args) throws IOException, InterruptedException {
         APIPuller api = new APIPuller();
         String trackID = "4FyesJzVpA39hbYvcseO2d";

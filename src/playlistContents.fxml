@@ -6,53 +6,220 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="779.0" prefWidth="1032.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="playlistContentsController">
+<AnchorPane prefHeight="779.0" prefWidth="1032.0" style="-fx-background-color: #413F43;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="playlistContentsController">
    <children>
-      <Button layoutX="951.0" mnemonicParsing="false" onAction="#switchToPlaylists" prefHeight="29.0" prefWidth="91.0" text="Playlists" />
-      <Button layoutX="855.0" mnemonicParsing="false" onAction="#switchToMain" prefHeight="29.0" prefWidth="97.0" text="Home" />
-      <Label fx:id="playlistName" layoutX="55.0" layoutY="22.0" prefHeight="65.0" prefWidth="357.0">
+      <Button layoutX="951.0" mnemonicParsing="false" onAction="#switchToPlaylists" prefHeight="29.0" prefWidth="91.0" text="Playlists">
+         <font>
+            <Font name="Dubai Bold" size="12.0" />
+         </font></Button>
+      <Button layoutX="855.0" mnemonicParsing="false" onAction="#switchToMain" prefHeight="29.0" prefWidth="97.0" text="Home">
+         <font>
+            <Font name="Dubai Bold" size="12.0" />
+         </font></Button>
+      <Label fx:id="playlistName" layoutX="55.0" layoutY="22.0" prefHeight="65.0" prefWidth="712.0" textFill="WHITE">
          <font>
             <Font name="Dubai Bold" size="36.0" />
          </font>
       </Label>
-      <ListView fx:id="songList" layoutX="55.0" layoutY="126.0" onMouseClicked="#pickSong" prefHeight="599.0" prefWidth="485.0" />
-      <TextField fx:id="filterValueField" layoutX="55.0" layoutY="87.0" prefHeight="39.0" prefWidth="271.0" promptText="&quot;Artist or Album Name&quot;">
+      <ListView fx:id="songList" layoutX="55.0" layoutY="126.0" onMouseClicked="#pickSong" prefHeight="599.0" prefWidth="480.0" style="-fx-background-color: #E7E4ED;" />
+      <TextField fx:id="filterValueField" layoutX="55.0" layoutY="85.0" prefHeight="41.0" prefWidth="271.0" promptText="&quot;Artist or Album Name&quot;">
          <font>
             <Font name="Dubai Regular" size="15.0" />
          </font>
       </TextField>
-      <Button layoutX="417.0" layoutY="87.0" mnemonicParsing="false" onAction="#filter" prefHeight="39.0" prefWidth="68.0" text="Filter">
+      <Button layoutX="417.0" layoutY="85.0" mnemonicParsing="false" onAction="#filter" prefHeight="41.0" prefWidth="59.0" text="Filter">
          <font>
-            <Font name="Dubai Bold" size="16.0" />
+            <Font name="Dubai Bold" size="14.0" />
          </font>
       </Button>
-      <Label fx:id="mostListenedTrack" layoutX="814.0" layoutY="170.0" prefHeight="39.0" prefWidth="200.0">
+      <Label fx:id="mostListenedTrack" layoutX="824.0" layoutY="170.0" prefHeight="39.0" prefWidth="200.0" textFill="WHITE">
          <font>
-            <Font name="Dubai Regular" size="20.0" />
+            <Font name="Dubai Bold" size="20.0" />
          </font>
       </Label>
-      <ComboBox fx:id="filterTypeBox" layoutX="326.0" layoutY="87.0" prefHeight="39.0" prefWidth="91.0" promptText="Filter By" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="39.0" layoutX="608.0" layoutY="170.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+      <ComboBox fx:id="filterTypeBox" layoutX="326.0" layoutY="85.0" prefHeight="41.0" prefWidth="91.0" promptText="Filter By" />
+      <Rectangle arcHeight="20.0" arcWidth="20.0" height="39.0" layoutX="608.0" layoutY="170.0" stroke="BLACK" strokeType="INSIDE" width="200.0">
+         <fill>
+            <LinearGradient endX="0.6113744075829384" endY="0.933649289099526" startY="0.1943127962085308">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.34491655230522156" green="0.24360379576683044" blue="0.40789473056793213" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.006711409395973154">
+                     <color>
+                        <Color red="0.5447855591773987" green="0.5321637392044067" blue="0.5526315569877625" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.7956871390342712" green="0.7291666865348816" blue="0.8289473652839661" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Rectangle>
+      <Rectangle arcHeight="20.0" arcWidth="20.0" height="39.0" layoutX="609.0" layoutY="223.0" stroke="BLACK" strokeType="INSIDE" width="200.0">
+         <fill>
+            <LinearGradient endX="0.6113744075829384" endY="0.933649289099526" startY="0.1943127962085308">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.34491655230522156" green="0.24360379576683044" blue="0.40789473056793213" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.006711409395973154">
+                     <color>
+                        <Color red="0.5447855591773987" green="0.5321637392044067" blue="0.5526315569877625" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.7956871390342712" green="0.7291666865348816" blue="0.8289473652839661" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Rectangle>
+      <Rectangle arcHeight="20.0" arcWidth="20.0" height="39.0" layoutX="608.0" layoutY="275.0" stroke="BLACK" strokeType="INSIDE" width="200.0">
+         <fill>
+            <LinearGradient endX="0.6113744075829384" endY="0.933649289099526" startY="0.1943127962085308">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.34491655230522156" green="0.24360379576683044" blue="0.40789473056793213" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.006711409395973154">
+                     <color>
+                        <Color red="0.5447855591773987" green="0.5321637392044067" blue="0.5526315569877625" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.7956871390342712" green="0.7291666865348816" blue="0.8289473652839661" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Rectangle>
+      <Rectangle arcHeight="20.0" arcWidth="20.0" height="39.0" layoutX="608.0" layoutY="329.0" stroke="BLACK" strokeType="INSIDE" width="200.0">
+         <fill>
+            <LinearGradient endX="0.6113744075829384" endY="0.933649289099526" startY="0.1943127962085308">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.34491655230522156" green="0.24360379576683044" blue="0.40789473056793213" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.006711409395973154">
+                     <color>
+                        <Color red="0.5447855591773987" green="0.5321637392044067" blue="0.5526315569877625" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.7956871390342712" green="0.7291666865348816" blue="0.8289473652839661" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Rectangle>
+      <Rectangle arcHeight="20.0" arcWidth="20.0" height="39.0" layoutX="608.0" layoutY="380.0" stroke="BLACK" strokeType="INSIDE" width="200.0">
+         <fill>
+            <LinearGradient endX="0.6113744075829384" endY="0.933649289099526" startY="0.1943127962085308">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.34491655230522156" green="0.24360379576683044" blue="0.40789473056793213" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.006711409395973154">
+                     <color>
+                        <Color red="0.5447855591773987" green="0.5321637392044067" blue="0.5526315569877625" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.7956871390342712" green="0.7291666865348816" blue="0.8289473652839661" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Rectangle>
+      <Rectangle arcHeight="20.0" arcWidth="20.0" height="39.0" layoutX="608.0" layoutY="434.0" stroke="BLACK" strokeType="INSIDE" width="200.0">
+         <fill>
+            <LinearGradient endX="0.6113744075829384" endY="0.933649289099526" startY="0.1943127962085308">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.34491655230522156" green="0.24360379576683044" blue="0.40789473056793213" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.006711409395973154">
+                     <color>
+                        <Color red="0.5447855591773987" green="0.5321637392044067" blue="0.5526315569877625" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.7956871390342712" green="0.7291666865348816" blue="0.8289473652839661" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Rectangle>
+      <Rectangle arcHeight="20.0" arcWidth="20.0" height="39.0" layoutX="609.0" layoutY="484.0" stroke="BLACK" strokeType="INSIDE" width="200.0">
+         <fill>
+            <LinearGradient endX="0.6113744075829384" endY="0.933649289099526" startY="0.1943127962085308">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.34491655230522156" green="0.24360379576683044" blue="0.40789473056793213" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.006711409395973154">
+                     <color>
+                        <Color red="0.5447855591773987" green="0.5321637392044067" blue="0.5526315569877625" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.7956871390342712" green="0.7291666865348816" blue="0.8289473652839661" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Rectangle>
       <Label layoutX="618.0" layoutY="170.0" prefHeight="39.0" prefWidth="189.0" text="Most Listened To Track:">
          <font>
             <Font name="Dubai Bold" size="18.0" />
          </font>
       </Label>
-      <Button layoutX="485.0" layoutY="87.0" mnemonicParsing="false" onAction="#resetSongs" prefHeight="39.0" prefWidth="56.0" text="Reset">
+      <Button layoutX="476.0" layoutY="85.0" mnemonicParsing="false" onAction="#resetSongs" prefHeight="41.0" prefWidth="59.0" text="Reset">
          <font>
-            <Font name="Dubai Regular" size="13.0" />
+            <Font name="Dubai Bold" size="14.0" />
          </font>
       </Button>
-      <Button layoutX="540.0" layoutY="87.0" mnemonicParsing="false" onAction="#playSong" prefHeight="39.0" prefWidth="68.0" text="Play" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="39.0" layoutX="608.0" layoutY="223.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="39.0" layoutX="608.0" layoutY="275.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="39.0" layoutX="608.0" layoutY="329.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="39.0" layoutX="608.0" layoutY="380.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="39.0" layoutX="608.0" layoutY="434.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="39.0" layoutX="608.0" layoutY="484.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+      <Button layoutX="535.0" layoutY="85.0" mnemonicParsing="false" onAction="#playSong" prefHeight="41.0" prefWidth="66.0" text="Play">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
       <Label layoutX="614.0" layoutY="223.0" prefHeight="39.0" prefWidth="189.0" text="Most Listened To Artist">
          <font>
             <Font name="Dubai Bold" size="18.0" />
@@ -83,39 +250,34 @@
             <Font name="Dubai Bold" size="19.0" />
          </font>
       </Label>
-      <Label fx:id="mostListenedTrack1" layoutX="821.0" layoutY="170.0" prefHeight="39.0" prefWidth="200.0">
+      <Label fx:id="mostListenedAlbum" layoutX="824.0" layoutY="275.0" prefHeight="39.0" prefWidth="200.0" textFill="WHITE">
          <font>
-            <Font name="Dubai Regular" size="20.0" />
+            <Font name="Dubai Bold" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="mostListenedAlbum" layoutX="824.0" layoutY="275.0" prefHeight="39.0" prefWidth="200.0">
+      <Label fx:id="mostListenedArtist" layoutX="824.0" layoutY="223.0" prefHeight="39.0" prefWidth="200.0" textFill="WHITE">
          <font>
-            <Font name="Dubai Regular" size="20.0" />
+            <Font name="Dubai Bold" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="mostListenedArtist" layoutX="824.0" layoutY="223.0" prefHeight="39.0" prefWidth="200.0">
+      <Label fx:id="mostListenedGenre" layoutX="824.0" layoutY="329.0" prefHeight="39.0" prefWidth="200.0" textFill="WHITE">
          <font>
-            <Font name="Dubai Regular" size="20.0" />
+            <Font name="Dubai Bold" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="mostListenedGenre" layoutX="824.0" layoutY="329.0" prefHeight="39.0" prefWidth="200.0">
+      <Label fx:id="mostListenedDay" layoutX="824.0" layoutY="380.0" prefHeight="39.0" prefWidth="200.0" textFill="WHITE">
          <font>
-            <Font name="Dubai Regular" size="20.0" />
+            <Font name="Dubai Bold" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="mostListenedDay" layoutX="824.0" layoutY="380.0" prefHeight="39.0" prefWidth="200.0">
+      <Label fx:id="totalMinutesListened" layoutX="824.0" layoutY="434.0" prefHeight="39.0" prefWidth="200.0" textFill="WHITE">
          <font>
-            <Font name="Dubai Regular" size="20.0" />
+            <Font name="Dubai Bold" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="totalMinutesListened" layoutX="824.0" layoutY="434.0" prefHeight="39.0" prefWidth="200.0">
+      <Label fx:id="playlistLength" layoutX="824.0" layoutY="484.0" prefHeight="39.0" prefWidth="200.0" textFill="WHITE">
          <font>
-            <Font name="Dubai Regular" size="20.0" />
-         </font>
-      </Label>
-      <Label fx:id="playlistLength" layoutX="824.0" layoutY="484.0" prefHeight="39.0" prefWidth="200.0">
-         <font>
-            <Font name="Dubai Regular" size="20.0" />
+            <Font name="Dubai Bold" size="20.0" />
          </font>
       </Label>
    </children>

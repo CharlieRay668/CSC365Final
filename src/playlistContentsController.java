@@ -77,13 +77,15 @@ public class playlistContentsController {
     }
 
     public void getData() {
-        displayMostListenedTrack();
-        displayMostListenedArtist();
-        displayMostListenedAlbum();
-        displayMostListenedGenre();
-        displayMostListenedDay();
-        displayTotalMinutesListened();
-        displayPlaylistLength();
+        if(connector.ifPlaysEmpty(globalPlaylistName)==0) {
+            displayMostListenedTrack();
+            displayMostListenedArtist();
+            displayMostListenedAlbum();
+            displayMostListenedGenre();
+            displayMostListenedDay();
+            displayTotalMinutesListened();
+            displayPlaylistLength();
+        }
     }
     public void resetSongs(ActionEvent e){
         fillSongList(globalPlaylistName);

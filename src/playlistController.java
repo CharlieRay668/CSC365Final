@@ -45,6 +45,9 @@ public class playlistController {
 
     public void createNewPlaylist(ActionEvent e){
         String playlistName = newPlaylistName.getText();
+        if (playlistName.isEmpty()){
+            return;
+        }
         if (playlists.contains(playlistName)) {
             return;
         }

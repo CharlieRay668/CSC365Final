@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -32,5 +33,7 @@
             <Font name="Dubai Regular" size="18.0" />
          </font>
       </MenuButton>
+      <TextField fx:id="limitString" layoutX="189.0" layoutY="140.0" prefHeight="25.0" prefWidth="173.0" promptText=" Optional Number of Results" />
+      <ProgressIndicator fx:id="progressWheel" layoutX="157.0" layoutY="163.0" prefHeight="47.0" prefWidth="31.0" visible="false" />
    </children>
 </AnchorPane>
