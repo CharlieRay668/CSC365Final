@@ -211,4 +211,10 @@ public class playlistContentsController {
         stage.setScene(scene);
         stage.show();
     }
+    public void deletePlaylist(ActionEvent event) throws IOException {
+        int pid =connector.getpidFromPname(globalPlaylistName);
+        connector.deletePlaylist(pid);
+        switchToPlaylists(event);
+    }
+
 }

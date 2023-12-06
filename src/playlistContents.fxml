@@ -280,5 +280,10 @@
             <Font name="Dubai Bold" size="20.0" />
          </font>
       </Label>
+      <Button mnemonicParsing="false" onAction="#deletePlaylist" prefHeight="30.0" prefWidth="91.0" text="Delete Playlist">
+         <font>
+            <Font name="Dubai Bold" size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

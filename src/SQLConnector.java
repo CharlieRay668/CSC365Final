@@ -98,6 +98,7 @@ class SQLConnector {
         }
     }
 
+
     public void instertTrack(String tid, int duration, boolean explicit, String name, String uri) {
         try {
             Statement stmt = this.connect.createStatement();
@@ -581,7 +582,17 @@ class SQLConnector {
             return -1;
         }
     }
-
+    public int deletePlaylist(int pid){
+        try{
+            Statement stmt = this.connect.createStatement();
+            stmt.executeUpdate("DELETE FROM chray.PlaylistTracks WHERE pid = " + Integer.toString(pid) + ";");
+            stmt.executeUpdate("DELETE FROM chray.Playlist WHERE pid = " + Integer.toString(pid) + ";");
+            return 1;
+        }catch(Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
     public static void main(String[] args) {
         APIPuller api = new APIPuller();
         SQLConnector sql = new SQLConnector();
