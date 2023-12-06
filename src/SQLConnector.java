@@ -224,13 +224,19 @@ class SQLConnector {
 
     public int createPlaylist(String name) {
         try {
-            Statement stmt = this.connect.createStatement();
-            stmt.executeQuery("SELECT * FROM chray.Playlist WHERE name = '"+name+"';");
-            ResultSet rs = stmt.getResultSet();
+            String selectSQL = "SELECT * FROM chray.Playlist WHERE name = ?";
+            PreparedStatement preparedStatement = this.connect.prepareStatement(selectSQL);
+            preparedStatement.setString(1, name);
+            ResultSet rs = preparedStatement.executeQuery();
             if (!rs.next()) {
-                stmt.executeUpdate("INSERT INTO chray.Playlist (name) VALUES ('"+name+"');");
-                stmt.executeQuery("SELECT * FROM chray.Playlist WHERE name = '"+name+"';");
-                rs = stmt.getResultSet();
+                String insertSQL = "INSERT INTO chray.Playlist (name) VALUES (?)";
+                preparedStatement = this.connect.prepareStatement(insertSQL);
+                preparedStatement.setString(1, name);
+                preparedStatement.executeUpdate();
+                selectSQL = "SELECT * FROM chray.Playlist WHERE name = ?";
+                preparedStatement = this.connect.prepareStatement(selectSQL);
+                preparedStatement.setString(1, name);
+                rs = preparedStatement.executeQuery();
                 rs.next();
                 return rs.getInt("pid");
             } else {
